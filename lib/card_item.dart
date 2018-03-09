@@ -11,7 +11,7 @@ class CardItem extends StatefulWidget {
 }
 
 class _CardItemState extends State<CardItem> {
-    final ShopCard _shopCard;
+  final ShopCard _shopCard;
   _CardItemState(this._shopCard);
 
   toggleBought(bool newValue) {
