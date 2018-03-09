@@ -44,9 +44,9 @@ class MyHomePage extends StatefulWidget {
 
   final String title;
   final List<ShopCard> cardList = [
-    new ShopCard("yay",{"akiba": "41", "magic": "52"}, false),
-    new ShopCard("hop",{"akiba": "20", "magic": "18"}, true),
-    new ShopCard("yoo",{"akiba": "10", "magic": "5"}, false),
+    new ShopCard("yay",{"akiba": 41, "magic": 52}, false),
+    new ShopCard("hop",{"akiba": 20, "magic": 18}, true),
+    new ShopCard("yoo",{"akiba": 10, "magic": 5}, false),
   ];
 
   @override
@@ -89,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // positions it in the middle of the parent.
         child: new Column(
             children: widget.cardList.map((ShopCard card) {
-              return new CardItem(shopCard: card,);
+              return new CardItem(card);
             }).toList(),
         ),
       ),
