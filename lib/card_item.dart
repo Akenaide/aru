@@ -13,44 +13,41 @@ class CardItem extends StatefulWidget {
 class _CardItemState extends State<CardItem> {
     final ShopCard _shopCard;
   _CardItemState(this._shopCard);
+
+  toggleBought(bool newValue) {
+    setState(() {
+      _shopCard.bought = newValue;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return new Row(children: <Widget>[
-      new Text("yay")
-    ],
+    return new Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        new Column(
+          children: <Widget>[
+            new Text(
+              _shopCard.cardId,
+            )
+          ],
+        ),
+        new Column(
+          children: <Widget>[
+            new Text(
+              _shopCard.stores.toString(),
+            )
+          ],
+        ),
+        new Column(
+          children: <Widget>[
+            new Checkbox(
+              value: _shopCard.bought,
+              onChanged: toggleBought,
+            )
+          ],
+        ),
+      ],
     );
   }
-  // final ShopCard shopCard = new ShopCard();
-  // @override
-  // Widget build(BuildContext context) {
-  //   return new Row(
-  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //     children: <Widget>[
-  //       new Column(
-  //         children: <Widget>[
-  //           new Text(
-  //             shopCard.cardId,
-  //           )
-  //         ],
-  //       ),
-  //       new Column(
-  //         children: <Widget>[
-  //           new Text(
-  //             shopCard.stores.toString(),
-  //           )
-  //         ],
-  //       ),
-  //       new Column(
-  //         children: <Widget>[
-  //           new Checkbox(
-  //             value: shopCard.bought,
-  //             onChanged: (bool newValue) {
-  //               shopCard.bought = newValue;
-  //             },
-  //           )
-  //         ],
-  //       ),
-  //     ],
-  //   );
-  // }
 }
