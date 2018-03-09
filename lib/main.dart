@@ -26,6 +26,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
       ),
       home: new MyHomePage(title: 'Aru'),
+      routes: <String, WidgetBuilder>{
+        '/addelement': (BuildContext context) => new _AddElement(),
+      },
     );
   }
 }
@@ -44,30 +47,23 @@ class MyHomePage extends StatefulWidget {
 
   final String title;
   final List<ShopCard> cardList = [
-    new ShopCard("yay",{"akiba": 41, "magic": 52}, false),
-    new ShopCard("hop",{"akiba": 20, "magic": 18}, true),
-    new ShopCard("yoo",{"akiba": 10, "magic": 5}, false),
+    new ShopCard("yay", {"akiba": 41, "magic": 52}, false),
+    new ShopCard("hop", {"akiba": 20, "magic": 18}, true),
+    new ShopCard("yoo", {"akiba": 10, "magic": 5}, false),
   ];
 
   @override
   _MyHomePageState createState() => new _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that
-      // something has changed in this State, which causes it to rerun
-      // the build method below so that the display can reflect the
-      // updated values. If we changed _counter without calling
-      // setState(), then the build method would not be called again,
-      // and so nothing would appear to happen.
-      _counter++;
-    });
+class _AddElement extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new Text("yay");
   }
+}
 
+class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance
@@ -88,14 +84,16 @@ class _MyHomePageState extends State<MyHomePage> {
         // Center is a layout widget. It takes a single child and
         // positions it in the middle of the parent.
         child: new Column(
-            children: widget.cardList.map((ShopCard card) {
-              return new CardItem(card);
-            }).toList(),
+          children: widget.cardList.map((ShopCard card) {
+            return new CardItem(card);
+          }).toList(),
         ),
       ),
       floatingActionButton: new FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        onPressed: () {
+          Navigator.of(context).pushNamed('/addelement');
+        },
+        tooltip: 'New element',
         child: new Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
