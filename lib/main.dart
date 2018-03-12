@@ -57,9 +57,45 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _AddElement extends StatelessWidget {
+  final TextStyle _textStyle = new TextStyle(fontSize: 20.0);
   @override
   Widget build(BuildContext context) {
-    return new Text("yay");
+    return  new Container(
+            color: Colors.green,
+            child: new Stack(
+              children: <Widget>[
+                new Positioned(
+                  // top: 25.0,
+                  child: new Center(
+                    child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      new Column(
+                        children: <Widget>[
+                          new Text("CardName", style: _textStyle),
+                        ],
+                      ),
+                      new Column(
+                        children: <Widget>[
+                          new Text(
+                            "Shops",
+                            style: _textStyle,
+                          ),
+                        ],
+                      ),
+                      new Column(
+                        children: <Widget>[
+                          new Text(
+                            "bought",
+                            style: _textStyle,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ))
+              ],
+            ));
   }
 }
 
