@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:developer';
 
 import 'package:aru/card_item.dart';
 import 'package:aru/card.dart';
+import 'package:aru/add_card.dart';
 
 void main() {
   runApp(new MyApp());
@@ -27,7 +30,7 @@ class MyApp extends StatelessWidget {
       ),
       home: new MyHomePage(title: 'Aru'),
       routes: <String, WidgetBuilder>{
-        '/addelement': (BuildContext context) => new _AddElement(),
+        '/addelement': (BuildContext context) => new AddElement(),
       },
     );
   }
@@ -46,60 +49,32 @@ class MyHomePage extends StatefulWidget {
   // Fields in a Widget subclass are always marked "final".
 
   final String title;
-  final List<ShopCard> cardList = [
-    new ShopCard("yay", {"akiba": 41, "magic": 52}, false),
-    new ShopCard("hop", {"akiba": 20, "magic": 18}, true),
-    new ShopCard("yoo", {"akiba": 10, "magic": 5}, false),
-  ];
 
   @override
   _MyHomePageState createState() => new _MyHomePageState();
 }
 
-class _AddElement extends StatelessWidget {
-  final TextStyle _textStyle = new TextStyle(fontSize: 20.0);
-  @override
-  Widget build(BuildContext context) {
-    return  new Container(
-            color: Colors.green,
-            child: new Stack(
-              children: <Widget>[
-                new Positioned(
-                  // top: 25.0,
-                  child: new Center(
-                    child: new Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      new Column(
-                        children: <Widget>[
-                          new Text("CardName", style: _textStyle),
-                        ],
-                      ),
-                      new Column(
-                        children: <Widget>[
-                          new Text(
-                            "Shops",
-                            style: _textStyle,
-                          ),
-                        ],
-                      ),
-                      new Column(
-                        children: <Widget>[
-                          new Text(
-                            "bought",
-                            style: _textStyle,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ))
-              ],
-            ));
-  }
-}
-
 class _MyHomePageState extends State<MyHomePage> {
+  List<ShopCard> cardList = [];
+  _getInitial() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<ShopCard> _cardList = (prefs.get('cards') ?? []);
+    _cardList.addAll([
+      new ShopCard("yay", {"akiba": 41, "magic": 52}, false),
+      new ShopCard("hop", {"akiba": 20, "magic": 18}, true),
+      new ShopCard("yoo", {"akiba": 10, "magic": 5}, false),
+    ]);
+    setState(() {
+      cardList = _cardList;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getInitial();
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance
@@ -120,9 +95,11 @@ class _MyHomePageState extends State<MyHomePage> {
         // Center is a layout widget. It takes a single child and
         // positions it in the middle of the parent.
         child: new Column(
-          children: widget.cardList.map((ShopCard card) {
-            return new CardItem(card);
-          }).toList(),
+          children: cardList.isEmpty
+              ? [new Text("No data")]
+              : cardList.map((ShopCard card) {
+                  return new CardItem(card);
+                }).toList(),
         ),
       ),
       floatingActionButton: new FloatingActionButton(
