@@ -4,4 +4,9 @@ class ShopCard {
   bool bought;
 
   ShopCard(this.cardId, this.stores, this.bought);
+
+  ShopCard.empty(String init) {
+    cardId = init;
+    bought = false;
+  }
 }

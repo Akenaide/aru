@@ -30,7 +30,8 @@ class MyApp extends StatelessWidget {
       ),
       home: new MyHomePage(title: 'Aru'),
       routes: <String, WidgetBuilder>{
-        '/addelement': (BuildContext context) => new AddElement(),
+        '/addelement': (BuildContext context) =>
+            new AddElementWidget(new ShopCard.empty()),
       },
     );
   }
@@ -70,13 +71,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    _getInitial();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    _getInitial();
     // This method is rerun every time setState is called, for instance
     // as done by the _incrementCounter method above.
     // The Flutter framework has been optimized to make rerunning
