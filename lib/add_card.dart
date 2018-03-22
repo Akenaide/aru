@@ -41,21 +41,27 @@ class _AddElement extends State<AddElementWidget> {
               hintText: "Card",
               contentPadding: new EdgeInsets.all(10.0),
             ),
-            onSubmitted: (_val) => setState(() {widget.shopCard.cardId = _val;}),
+            onChanged: (_val) => setState(() {
+                  widget.shopCard.cardId = _val;
+                }),
           ),
           new TextField(
             decoration: new InputDecoration(
               hintText: "Shop / price",
               contentPadding: new EdgeInsets.all(10.0),
             ),
-            onSubmitted: (_val) => setState(() {widget.shopCard.stores = JSON.decode(_val);}),
+            onChanged: (_val) => setState(() {
+                  widget.shopCard.stores = JSON.decode(_val);
+                }),
           ),
           new Row(
             children: <Widget>[
               new Text("Bought"),
               new Checkbox(
                 value: widget.shopCard.bought,
-                onChanged: (_val) => setState(() {widget.shopCard.bought = _val;}),
+                onChanged: (_val) => setState(() {
+                      widget.shopCard.bought = _val;
+                    }),
               )
             ],
           ),

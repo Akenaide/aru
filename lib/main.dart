@@ -59,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<ShopCard> cardList = [];
 
   _getInitial() async {
-  List<ShopCard> _cardList = [];
+    List<ShopCard> _cardList = [];
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var _local = prefs.getStringList('cards');
     if (_local == null) {
@@ -85,13 +85,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // _getInitial();
-    // This method is rerun every time setState is called, for instance
-    // as done by the _incrementCounter method above.
-    // The Flutter framework has been optimized to make rerunning
-    // build methods fast, so that you can just rebuild anything that
-    // needs updating rather than having to individually change
-    // instances of widgets.
     return new Scaffold(
       appBar: new AppBar(
         // Here we take the value from the MyHomePage object that
@@ -100,16 +93,12 @@ class _MyHomePageState extends State<MyHomePage> {
         // our appbar title.
         title: new Text(widget.title),
       ),
-      body: new Center(
-        // Center is a layout widget. It takes a single child and
-        // positions it in the middle of the parent.
-        child: new Column(
-          children: cardList.isEmpty
-              ? [new Text("No data")]
-              : cardList.map((ShopCard card) {
-                  return new CardItem(card);
-                }).toList(),
-        ),
+      body: new ListView(
+        children: cardList.isEmpty
+            ? [new Text("No data")]
+            : cardList.map((ShopCard card) {
+                return new CardItem(card);
+              }).toList(),
       ),
       floatingActionButton: new FloatingActionButton(
         onPressed: () {
