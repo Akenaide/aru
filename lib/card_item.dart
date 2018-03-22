@@ -4,19 +4,19 @@ import 'package:aru/card.dart';
 
 class CardItem extends StatefulWidget {
   final ShopCard _shopCard;
+
   CardItem(this._shopCard);
 
   @override
-  _CardItemState createState() => new _CardItemState(_shopCard);
+  _CardItemState createState() => new _CardItemState();
 }
 
 class _CardItemState extends State<CardItem> {
-  final ShopCard _shopCard;
-  _CardItemState(this._shopCard);
+  _CardItemState();
 
   toggleBought(bool newValue) {
     setState(() {
-      _shopCard.bought = newValue;
+      widget._shopCard.bought = newValue;
     });
   }
 
@@ -28,21 +28,21 @@ class _CardItemState extends State<CardItem> {
         new Column(
           children: <Widget>[
             new Text(
-              _shopCard.cardId,
+              widget._shopCard.cardId,
             )
           ],
         ),
         new Column(
           children: <Widget>[
             new Text(
-              _shopCard.stores.toString(),
+              widget._shopCard.stores.toString(),
             )
           ],
         ),
         new Column(
           children: <Widget>[
             new Checkbox(
-              value: _shopCard.bought,
+              value: widget._shopCard.bought,
               onChanged: toggleBought,
             )
           ],

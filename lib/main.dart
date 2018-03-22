@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       home: new MyHomePage(title: 'Aru'),
       routes: <String, WidgetBuilder>{
         '/addelement': (BuildContext context) =>
-            new AddElementWidget(new ShopCard.empty()),
+            new AddElementWidget(new ShopCard.empty("")),
       },
     );
   }
@@ -57,13 +57,20 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<ShopCard> cardList = [];
+
   _getInitial() async {
+  List<ShopCard> _cardList = [];
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<ShopCard> _cardList = (prefs.get('cards') ?? []);
+    var _local = prefs.getStringList('cards');
+    if (_local == null) {
+      prefs.setStringList("cards", []);
+    } else {
+      _cardList.addAll(_local.map((item) => new ShopCard.fromStringc(item)));
+    }
     _cardList.addAll([
-      new ShopCard("yay", {"akiba": 41, "magic": 52}, false),
-      new ShopCard("hop", {"akiba": 20, "magic": 18}, true),
-      new ShopCard("yoo", {"akiba": 10, "magic": 5}, false),
+      new ShopCard.full("yay", {"akiba": 41, "magic": 52}, false),
+      new ShopCard.full("hop", {"akiba": 20, "magic": 18}, true),
+      new ShopCard.full("yoo", {"akiba": 10, "magic": 5}, false),
     ]);
     setState(() {
       cardList = _cardList;
@@ -71,8 +78,14 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     _getInitial();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // _getInitial();
     // This method is rerun every time setState is called, for instance
     // as done by the _incrementCounter method above.
     // The Flutter framework has been optimized to make rerunning
