@@ -6,6 +6,7 @@ class ShopCard {
   ShopCard.empty(String init) {
     cardId = init;
     bought = false;
+    stores = new Map();
   }
 
   ShopCard.fromStringc(data) {
@@ -25,4 +26,9 @@ class ShopCard {
   String cardId;
   Map<String, int> stores;
   bool bought;
+}
+
+class Shop {
+  String name;
+  int price;
 }
