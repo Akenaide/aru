@@ -10,13 +10,11 @@ class AddElementWidget extends StatefulWidget {
   AddElementWidget(this.shopCard);
 
   @override
-  _AddElement createState() => new _AddElement(this.shopCard);
+  _AddElement createState() => new _AddElement();
 }
 
 class _AddElement extends State<AddElementWidget> {
   // final TextStyle _textStyle = new TextStyle(fontSize: 20.0);
-  ShopCard shopCard;
-  _AddElement(this.shopCard);
 
   _addElement() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
