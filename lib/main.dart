@@ -100,12 +100,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 return new CardItem(card);
               }).toList(),
       ),
-      floatingActionButton: new FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).pushNamed('/addelement');
-        },
-        tooltip: 'New element',
-        child: new Icon(Icons.add),
+      bottomNavigationBar: new Container(
+        color: Colors.grey,
+        child: new FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context).pushNamed('/addelement');
+          },
+          tooltip: 'New element',
+          child: new Icon(Icons.add),
+        ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
