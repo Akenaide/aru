@@ -45,14 +45,39 @@ class _AddElement extends State<AddElementWidget> {
                   widget.shopCard.cardId = _val;
                 }),
           ),
-          new TextField(
-            decoration: new InputDecoration(
-              hintText: "Shop / price",
-              contentPadding: new EdgeInsets.all(10.0),
+          new Container(
+            child: new Column(
+              children: <Widget>[
+                new Row(
+                  children: <Widget>[
+                    new Flexible(
+                      child: new TextField(
+                        decoration: new InputDecoration(
+                          hintText: "Shop",
+                        ),
+                      ),
+                    ),
+                    new Flexible(
+                      child: new TextField(
+                        decoration: new InputDecoration(
+                          hintText: "Price",
+                        ),
+                        keyboardType: TextInputType.number,
+                      ),
+                    ),
+                  ],
+                ),
+                new TextField(
+                  decoration: new InputDecoration(
+                    hintText: "Shop / price",
+                    contentPadding: new EdgeInsets.all(10.0),
+                  ),
+                  onChanged: (_val) => setState(() {
+                        widget.shopCard.stores = JSON.decode(_val);
+                      }),
+                )
+              ],
             ),
-            onChanged: (_val) => setState(() {
-                  widget.shopCard.stores = JSON.decode(_val);
-                }),
           ),
           new Row(
             children: <Widget>[
