@@ -10,7 +10,7 @@ class ShopCard {
   }
 
   ShopCard.fromStringc(data) {
-    var _json = JSON.decode(data);
+    var _json = json.decode(data);
     cardId = _json["cardId"];
     stores = _json["stores"];
     bought = _json["bought"];

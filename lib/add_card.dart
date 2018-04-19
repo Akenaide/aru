@@ -68,7 +68,7 @@ class _AddElement extends State<AddElementWidget> {
     widget.shopCard.cardId = _cardIdCtrl.text;
     List<String> prevCards = [];
     prevCards.addAll(prefs.getStringList("cards"));
-    prevCards.add(JSON.encode(widget.shopCard.toJson()).toString());
+    prevCards.add(json.encode(widget.shopCard.toJson()).toString());
     prefs.setStringList("cards", prevCards);
     Navigator.of(context).pushNamed("/");
   }
