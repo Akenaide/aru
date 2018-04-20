@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:aru/card.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,14 +32,11 @@ class _ShopState extends State<ShopWidget> {
         ),
         new Flexible(
           child: new TextField(
-            decoration: new InputDecoration(
-              hintText: "Price",
-            ),
-            keyboardType: TextInputType.number,
-            onChanged: (_val) => setState(() {
-                  widget.shop.price = int.parse(_val);
-                }),
-          ),
+              decoration: new InputDecoration(
+                hintText: "Price",
+              ),
+              keyboardType: TextInputType.number,
+              onChanged: (_val) => widget.shop.price = int.parse(_val)),
         ),
       ],
     );
@@ -46,12 +44,7 @@ class _ShopState extends State<ShopWidget> {
 }
 
 class AddElementWidget extends StatefulWidget {
-  final ShopCard shopCard;
-  final List<Shop> shopList = [
-    new Shop(),
-  ];
-
-  AddElementWidget(this.shopCard);
+  AddElementWidget();
 
   @override
   _AddElement createState() => new _AddElement();
@@ -59,22 +52,59 @@ class AddElementWidget extends StatefulWidget {
 
 class _AddElement extends State<AddElementWidget> {
   final TextEditingController _cardIdCtrl = new TextEditingController();
+  final TextEditingController _nameCtrl = new TextEditingController();
+  final TextEditingController _priceCtrl = new TextEditingController();
+
+  ShopCard shopCard;
+  List<Shop> shopList = [
+    new Shop(),
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    this.shopCard = new ShopCard.empty("");
+  }
 
   _addElement() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    widget.shopList.forEach((Shop shop) {
-      widget.shopCard.stores[shop.name] = shop.price;
+    this.shopList.forEach((Shop shop) {
+      this.shopCard.stores[shop.name] = shop.price;
     });
-    widget.shopCard.cardId = _cardIdCtrl.text;
+    this.shopCard.cardId = _cardIdCtrl.text;
     List<String> prevCards = [];
     prevCards.addAll(prefs.getStringList("cards"));
-    prevCards.add(json.encode(widget.shopCard.toJson()).toString());
+    prevCards.add(json.encode(shopCard.toJson()).toString());
     prefs.setStringList("cards", prevCards);
     Navigator.of(context).pushNamed("/");
   }
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> shopsW = [];
+    for (int i = 0; i < this.shopList.length; i++) {
+      shopsW.add(new Row(
+        children: <Widget>[
+          new Flexible(
+            child: new TextField(
+              decoration: new InputDecoration(
+                hintText: "Shop",
+              ),
+              onChanged: (_val) => this.shopList[i].name = _val,
+            ),
+          ),
+          new Flexible(
+            child: new TextField(
+              decoration: new InputDecoration(
+                hintText: "Price",
+              ),
+              keyboardType: TextInputType.number,
+              onChanged: (_val) => this.shopList[i].price = int.parse(_val),
+            ),
+          ),
+        ],
+      ));
+    }
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("New element"),
@@ -91,18 +121,16 @@ class _AddElement extends State<AddElementWidget> {
           ),
           new Container(
             child: new Column(
-              children: widget.shopList.map((Shop _shop) {
-                return new ShopWidget(_shop);
-              }).toList(),
+              children: shopsW,
             ),
           ),
           new Row(
             children: <Widget>[
               new Text("Bought"),
               new Checkbox(
-                value: widget.shopCard.bought,
+                value: this.shopCard.bought,
                 onChanged: (_val) => setState(() {
-                      widget.shopCard.bought = _val;
+                      this.shopCard.bought = _val;
                     }),
               )
             ],

@@ -12,14 +12,18 @@ class ShopCard {
   ShopCard.fromStringc(data) {
     var _json = json.decode(data);
     cardId = _json["cardId"];
-    stores = _json["stores"];
     bought = _json["bought"];
+    stores = new Map();
+    _json["stores"].forEach((String key, value) {
+      stores.putIfAbsent(key, () => value);
+    });
   }
 
   dynamic toJson() {
     return {
       "cardId": this.cardId,
       "bought": this.bought,
+      "stores": this.stores,
     };
   }
 

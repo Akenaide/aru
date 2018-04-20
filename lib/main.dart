@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:developer';
 
 import 'package:aru/card_item.dart';
 import 'package:aru/card.dart';
@@ -31,7 +30,7 @@ class MyApp extends StatelessWidget {
       home: new MyHomePage(title: 'Aru'),
       routes: <String, WidgetBuilder>{
         '/addelement': (BuildContext context) =>
-            new AddElementWidget(new ShopCard.empty("")),
+            new AddElementWidget(),
       },
     );
   }
