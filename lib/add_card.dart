@@ -62,6 +62,15 @@ class _AddElement extends State<AddElementWidget> {
               onChanged: (_val) => this.shopList[i].price = int.parse(_val),
             ),
           ),
+          new IconButton(
+            onPressed: () {
+              setState(() {
+                this.shopList.add(new Shop());
+              });
+            },
+            tooltip: 'New element',
+            icon: new Icon(Icons.add),
+          ),
         ],
       ));
     }
