@@ -5,44 +5,6 @@ import 'dart:developer';
 import 'package:aru/card.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ShopWidget extends StatefulWidget {
-  final Shop shop;
-
-  ShopWidget(this.shop);
-
-  @override
-  _ShopState createState() => new _ShopState();
-}
-
-class _ShopState extends State<ShopWidget> {
-  final TextEditingController _nameCtrl = new TextEditingController();
-  final TextEditingController _priceCtrl = new TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return new Row(
-      children: <Widget>[
-        new Flexible(
-          child: new TextField(
-            decoration: new InputDecoration(
-              hintText: "Shop",
-            ),
-            controller: _nameCtrl,
-          ),
-        ),
-        new Flexible(
-          child: new TextField(
-              decoration: new InputDecoration(
-                hintText: "Price",
-              ),
-              keyboardType: TextInputType.number,
-              onChanged: (_val) => widget.shop.price = int.parse(_val)),
-        ),
-      ],
-    );
-  }
-}
-
 class AddElementWidget extends StatefulWidget {
   AddElementWidget();
 
@@ -52,8 +14,6 @@ class AddElementWidget extends StatefulWidget {
 
 class _AddElement extends State<AddElementWidget> {
   final TextEditingController _cardIdCtrl = new TextEditingController();
-  final TextEditingController _nameCtrl = new TextEditingController();
-  final TextEditingController _priceCtrl = new TextEditingController();
 
   ShopCard shopCard;
   List<Shop> shopList = [
