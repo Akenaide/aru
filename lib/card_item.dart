@@ -19,11 +19,18 @@ class _ShopRowState extends State<ShopRow> {
     List<Widget> shops = [];
     widget._shopCard.stores.forEach((String name, int price) {
       shops.add(new Row(
-        children: <Widget>[new Text("$name : $price")],
+        children: <Widget>[
+          new Text(
+            "$name : ",
+            style: new TextStyle(fontWeight: FontWeight.bold),
+          ),
+          new Text(
+            "$price",
+          )
+        ],
       ));
     });
     return new Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: shops,
     );
   }
@@ -57,7 +64,7 @@ class _CardItemState extends State<Cardrow> {
               widget._shopCard.cardId,
             )),
         new SizedBox(
-          width: 80.0,
+            width: 130.0,
           child: new ShopRow(widget._shopCard),
         ),
         new Column(
