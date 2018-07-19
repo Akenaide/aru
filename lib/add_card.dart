@@ -50,6 +50,7 @@ class _AddElement extends State<AddElementWidget> {
               decoration: new InputDecoration(
                 hintText: "Shop",
               ),
+              maxLength: 10,
               onChanged: (_val) => this.shopList[i].name = _val,
             ),
           ),

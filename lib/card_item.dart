@@ -21,12 +21,9 @@ class _ShopRowState extends State<ShopRow> {
       shops.add(new Row(
         children: <Widget>[
           new Text(
-            "$name : ",
-            style: new TextStyle(fontWeight: FontWeight.bold),
+            "$name : $price",
+            overflow: TextOverflow.clip,
           ),
-          new Text(
-            "$price",
-          )
         ],
       ));
     });
@@ -55,27 +52,29 @@ class _CardItemState extends State<Cardrow> {
 
   @override
   Widget build(BuildContext context) {
-    return new Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: <Widget>[
-        new SizedBox(
-            width: 80.0,
-            child: new Text(
-              widget._shopCard.cardId,
-            )),
-        new SizedBox(
-            width: 130.0,
-          child: new ShopRow(widget._shopCard),
-        ),
-        new Column(
+    return new InkWell(
+        onLongPress: () {
+          print("action");
+        },
+        child: new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            new Checkbox(
-              value: widget._shopCard.bought,
-              onChanged: toggleBought,
-            )
+            new SizedBox(
+                width: 75.0,
+                child: new Text(
+                  widget._shopCard.cardId,
+                )),
+            new SizedBox(
+              width: 180.0,
+              child: new ShopRow(widget._shopCard),
+            ),
+            new SizedBox(
+                width: 20.0,
+                child: new Checkbox(
+                  value: widget._shopCard.bought,
+                  onChanged: toggleBought,
+                )),
           ],
-        ),
-      ],
-    );
+        ));
   }
 }
