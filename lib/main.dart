@@ -29,8 +29,7 @@ class MyApp extends StatelessWidget {
       ),
       home: new MyHomePage(title: 'Aru'),
       routes: <String, WidgetBuilder>{
-        '/addelement': (BuildContext context) =>
-            new AddElementWidget(),
+        '/addelement': (BuildContext context) => new AddElementWidget(),
       },
     );
   }
@@ -96,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: cardList.isEmpty
             ? [new Text("No data")]
             : cardList.map((ShopCard card) {
-                return new CardItem(card);
+                return new Cardrow(card);
               }).toList(),
       ),
       bottomNavigationBar: new Container(
