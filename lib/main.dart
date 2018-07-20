@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
       home: new MyHomePage(title: 'Aru'),
       routes: <String, WidgetBuilder>{
         '/addelement': (BuildContext context) => new AddElementWidget(),
+        '/editelement': (BuildContext context) => new AddElementWidget(),
       },
     );
   }

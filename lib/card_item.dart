@@ -78,7 +78,7 @@ class _CardItemState extends State<Cardrow> {
                 child: new FlatButton(
                   child: new Text("Add shop"),
                   onPressed: () {
-                    print("yay");
+                    Navigator.of(context).pushNamed('/editelement');
                   },
                 ),
               )

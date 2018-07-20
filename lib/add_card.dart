@@ -43,37 +43,31 @@ class _AddElement extends State<AddElementWidget> {
   Widget build(BuildContext context) {
     List<Widget> shopsW = [];
     for (int i = 0; i < this.shopList.length; i++) {
-      shopsW.add(new Row(
-        children: <Widget>[
-          new Flexible(
-            child: new TextField(
-              decoration: new InputDecoration(
-                hintText: "Shop",
+      shopsW.add(
+        new Container(
+          margin: const EdgeInsets.symmetric(vertical: 5.0),
+          decoration:
+              new BoxDecoration(border: new Border.all(color: Colors.black)),
+          child: new Column(
+            children: <Widget>[
+              new TextField(
+                decoration: new InputDecoration(
+                  hintText: "Shop",
+                ),
+                maxLength: 10,
+                onChanged: (_val) => this.shopList[i].name = _val,
               ),
-              maxLength: 10,
-              onChanged: (_val) => this.shopList[i].name = _val,
-            ),
-          ),
-          new Flexible(
-            child: new TextField(
-              decoration: new InputDecoration(
-                hintText: "Price",
+              new TextField(
+                decoration: new InputDecoration(
+                  hintText: "Price",
+                ),
+                keyboardType: TextInputType.number,
+                onChanged: (_val) => this.shopList[i].price = int.parse(_val),
               ),
-              keyboardType: TextInputType.number,
-              onChanged: (_val) => this.shopList[i].price = int.parse(_val),
-            ),
+            ],
           ),
-          new IconButton(
-            onPressed: () {
-              setState(() {
-                this.shopList.add(new Shop());
-              });
-            },
-            tooltip: 'New element',
-            icon: new Icon(Icons.add),
-          ),
-        ],
-      ));
+        ),
+      );
     }
     return new Scaffold(
       appBar: new AppBar(
@@ -89,11 +83,9 @@ class _AddElement extends State<AddElementWidget> {
             ),
             controller: _cardIdCtrl,
           ),
-          new Container(
-            child: new Column(
+           new ListView(
               children: shopsW,
-            ),
-          ),
+              ),
           new Row(
             children: <Widget>[
               new Text("Bought"),
@@ -104,6 +96,15 @@ class _AddElement extends State<AddElementWidget> {
                     }),
               )
             ],
+          ),
+          new IconButton(
+            onPressed: () {
+              setState(() {
+                this.shopList.add(new Shop());
+              });
+            },
+            tooltip: 'New element',
+            icon: new Icon(Icons.add),
           ),
           new RaisedButton(
             onPressed: _addElement,
