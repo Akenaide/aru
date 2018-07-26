@@ -73,8 +73,7 @@ class _AddElement extends State<AddElementWidget> {
       appBar: new AppBar(
         title: new Text("New element"),
       ),
-      body: new Center(
-          child: new Column(
+      body: new ListView(
         children: <Widget>[
           new TextField(
             decoration: new InputDecoration(
@@ -83,9 +82,9 @@ class _AddElement extends State<AddElementWidget> {
             ),
             controller: _cardIdCtrl,
           ),
-           new ListView(
-              children: shopsW,
-              ),
+          new Column(
+            children: shopsW,
+          ),
           new Row(
             children: <Widget>[
               new Text("Bought"),
@@ -94,23 +93,30 @@ class _AddElement extends State<AddElementWidget> {
                 onChanged: (_val) => setState(() {
                       this.shopCard.bought = _val;
                     }),
-              )
+              ),
             ],
           ),
-          new IconButton(
-            onPressed: () {
-              setState(() {
-                this.shopList.add(new Shop());
-              });
-            },
-            tooltip: 'New element',
-            icon: new Icon(Icons.add),
-          ),
-          new RaisedButton(
-            onPressed: _addElement,
-          )
         ],
-      )),
+      ),
+      bottomNavigationBar: new BottomAppBar(
+        color: Colors.blue,
+        child: new Row(
+          children: <Widget>[
+            new IconButton(
+              onPressed: () {
+                setState(() {
+                  this.shopList.add(new Shop());
+                });
+              },
+              tooltip: 'New element',
+              icon: new Icon(Icons.add),
+            ),
+            new RaisedButton(
+              onPressed: _addElement,
+            )
+          ],
+        ),
+      ),
     );
   }
 }
