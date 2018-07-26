@@ -52,40 +52,39 @@ class _CardItemState extends State<Cardrow> {
 
   @override
   Widget build(BuildContext context) {
-    return new Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: <Widget>[
-        new SizedBox(
-            width: 75.0,
-            child: new Text(
-              widget._shopCard.cardId,
-            )),
-        new SizedBox(
-          width: 180.0,
-          child: new ShopRow(widget._shopCard),
-        ),
-        new SizedBox(
-          width: 20.0,
-          child: new Checkbox(
-            value: widget._shopCard.bought,
-            onChanged: toggleBought,
-          ),
-        ),
-        new PopupMenuButton(
-          itemBuilder: (context) {
-            return [
-              new PopupMenuItem(
-                child: new FlatButton(
-                  child: new Text("Add shop"),
-                  onPressed: () {
-                    Navigator.of(context).pushNamed('/editelement');
-                  },
-                ),
-              )
-            ];
-          },
-        )
-      ],
-    );
+    return new Padding(
+        padding: new EdgeInsets.symmetric(horizontal: 2.0),
+        child: new Row(
+          // mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            new SizedBox(
+                width: 70.0,
+                child: new Text(
+                  widget._shopCard.cardId,
+                )),
+            new Expanded(
+              // width: 190.0,
+              child: new ShopRow(widget._shopCard),
+            ),
+            new Checkbox(
+              value: widget._shopCard.bought,
+              onChanged: toggleBought,
+            ),
+            new PopupMenuButton(
+              itemBuilder: (context) {
+                return [
+                  new PopupMenuItem(
+                    child: new FlatButton(
+                      child: new Text("Add shop"),
+                      onPressed: () {
+                        Navigator.of(context).pushNamed('/editelement');
+                      },
+                    ),
+                  )
+                ];
+              },
+            )
+          ],
+        ));
   }
 }
