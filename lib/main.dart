@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:aru/card_item.dart';
 import 'package:aru/card.dart';
 import 'package:aru/add_card.dart';
+import 'package:aru/edit_card.dart';
 
 void main() {
   runApp(new MyApp());
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
       home: new MyHomePage(title: 'Aru'),
       routes: <String, WidgetBuilder>{
         '/addelement': (BuildContext context) => new AddElementWidget(),
-        '/editelement': (BuildContext context) => new AddElementWidget(),
+        '/editelement': (BuildContext context) => new EditElementWidget(),
       },
     );
   }

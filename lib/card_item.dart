@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 import 'package:aru/card.dart';
 
@@ -50,6 +52,11 @@ class _CardItemState extends State<Cardrow> {
     });
   }
 
+  void cacheSelectedCard(ShopCard selected) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("selectedCard", json.encode(selected.toJson()).toString());
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Padding(
@@ -78,6 +85,7 @@ class _CardItemState extends State<Cardrow> {
                     child: new Text("Add shop"),
                     onPressed: () {
                       Navigator.of(context).pushNamed('/editelement');
+                      cacheSelectedCard(widget._shopCard);
                     },
                   ),
                 )
