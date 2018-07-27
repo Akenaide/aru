@@ -17,7 +17,7 @@ class _AddElement extends State<AddElementWidget> {
 
   ShopCard shopCard;
   List<Shop> shopList = [
-    new Shop(),
+    new Shop.empty(),
   ];
 
   @override
@@ -104,7 +104,7 @@ class _AddElement extends State<AddElementWidget> {
             new IconButton(
               onPressed: () {
                 setState(() {
-                  this.shopList.add(new Shop());
+                  this.shopList.add(new Shop.empty());
                 });
               },
               tooltip: 'New element',

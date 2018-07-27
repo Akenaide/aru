@@ -35,4 +35,10 @@ class ShopCard {
 class Shop {
   String name;
   int price;
+
+  Shop.full(this.name, this.price);
+  Shop.empty() {
+    name = "";
+    price = 0;
+  }
 }
