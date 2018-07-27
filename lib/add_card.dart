@@ -44,10 +44,9 @@ class _AddElement extends State<AddElementWidget> {
     List<Widget> shopsW = [];
     for (int i = 0; i < this.shopList.length; i++) {
       shopsW.add(
-        new Container(
+        new Card(
           margin: const EdgeInsets.symmetric(vertical: 5.0),
-          decoration:
-              new BoxDecoration(border: new Border.all(color: Colors.black)),
+          elevation: 10.0,
           child: new Column(
             children: <Widget>[
               new TextField(
