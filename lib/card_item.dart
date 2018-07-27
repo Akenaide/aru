@@ -62,7 +62,7 @@ class _CardItemState extends State<Cardrow> {
               child: new Text(
                 widget._shopCard.cardId,
               )),
-          new Expanded(
+          new Flexible(
             // width: 190.0,
             child: new ShopRow(widget._shopCard),
           ),
