@@ -69,10 +69,11 @@ class _CardItemState extends State<Cardrow> {
               child: new Text(
                 widget._shopCard.cardId,
               )),
-          new Flexible(
-            // width: 190.0,
+          // width: 190.0,
+          new Expanded(
             child: new ShopRow(widget._shopCard),
           ),
+
           new Checkbox(
             value: widget._shopCard.bought,
             onChanged: toggleBought,

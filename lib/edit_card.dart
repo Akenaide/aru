@@ -67,7 +67,7 @@ class _EditElement extends State<EditElementWidget> {
                   hintText: "Shop",
                 ),
                 maxLength: 10,
-                onFieldSubmitted: (_val) => this.shopList[i].name = _val,
+                onFieldSubmitted: (_val) => this.shopList[i].name = _val.trim(),
               ),
               new TextFormField(
                 initialValue: this.shopList[i].price.toString(),
@@ -83,17 +83,18 @@ class _EditElement extends State<EditElementWidget> {
         ),
       );
     }
-    shopsW.add(new Row(
-            children: <Widget>[
-              new Text("Bought"),
-              new Checkbox(
-                value: this.shopCard?.bought,
-                onChanged: (_val) => setState(() {
-                      this.shopCard.bought = _val;
-                    }),
-              ),
-            ],
+    shopsW.add(
+      new Row(
+        children: <Widget>[
+          new Text("Bought"),
+          new Checkbox(
+            value: this.shopCard?.bought,
+            onChanged: (_val) => setState(() {
+                  this.shopCard.bought = _val;
+                }),
           ),
+        ],
+      ),
     );
     return shopsW;
   }
