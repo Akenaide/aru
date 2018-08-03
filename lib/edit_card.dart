@@ -113,22 +113,24 @@ class _EditElement extends State<EditElementWidget> {
             });
           }
         }
-        return new ListView(
-          children: <Widget>[
-            new TextField(
-              decoration: new InputDecoration(
-                hintText: "Card",
-                contentPadding: new EdgeInsets.all(10.0),
+        return new SingleChildScrollView(
+          child: new Column(
+            children: <Widget>[
+              new TextField(
+                decoration: new InputDecoration(
+                  hintText: "Card",
+                  contentPadding: new EdgeInsets.all(10.0),
+                ),
+                controller: _cardIdCtrl,
               ),
-              controller: _cardIdCtrl,
-            ),
-            new Form(
-              key: _formKey,
-              child: new Column(
-                children: buildShopList(),
+              new Form(
+                key: _formKey,
+                child: new Column(
+                  children: buildShopList(),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );
