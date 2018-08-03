@@ -57,22 +57,33 @@ class _EditElement extends State<EditElementWidget> {
     for (int i = 0; i < this.shopList.length; i++) {
       shopsW.add(
         new Card(
-          margin: const EdgeInsets.symmetric(vertical: 5.0),
+          margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
           elevation: 10.0,
           child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              const Text(
+                "Shop name",
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
               new TextFormField(
                 initialValue: this.shopList[i].name,
                 decoration: new InputDecoration(
                   hintText: "Shop",
+                  icon: const Icon(Icons.business),
                 ),
                 maxLength: 10,
                 onFieldSubmitted: (_val) => this.shopList[i].name = _val.trim(),
+              ),
+              const Text(
+                "Price",
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               new TextFormField(
                 initialValue: this.shopList[i].price.toString(),
                 decoration: new InputDecoration(
                   hintText: "Price",
+                  icon: const Icon(Icons.attach_money),
                 ),
                 keyboardType: TextInputType.number,
                 onFieldSubmitted: (_val) =>
@@ -120,6 +131,7 @@ class _EditElement extends State<EditElementWidget> {
                 decoration: new InputDecoration(
                   hintText: "Card",
                   contentPadding: new EdgeInsets.all(10.0),
+                  icon: const Icon(Icons.payment),
                 ),
                 controller: _cardIdCtrl,
               ),
