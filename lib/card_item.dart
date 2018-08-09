@@ -37,8 +37,9 @@ class _ShopRowState extends State<ShopRow> {
 
 class Cardrow extends StatefulWidget {
   final ShopCard _shopCard;
+  final Function(String) _delete;
 
-  Cardrow(this._shopCard);
+  Cardrow(this._shopCard, this._delete);
 
   @override
   _CardItemState createState() => new _CardItemState();
@@ -85,6 +86,10 @@ class _CardItemState extends State<Cardrow> {
                   Navigator.of(context).pushNamed('/editelement');
                   cacheSelectedCard(widget._shopCard);
                   break;
+
+                case "delete":
+                  widget._delete(widget._shopCard.cardId);
+                  break;
                 default:
               }
             },
@@ -92,8 +97,28 @@ class _CardItemState extends State<Cardrow> {
               return [
                 new PopupMenuItem(
                   value: "edit",
-                  child: new Text("Edit"),
-                )
+                  child: new Row(
+                    children: <Widget>[
+                      const Icon(
+                        Icons.edit,
+                        semanticLabel: "Edit",
+                      ),
+                      const Text("Edit"),
+                    ],
+                  ),
+                ),
+                new PopupMenuItem(
+                  value: "delete",
+                  child: new Row(
+                    children: <Widget>[
+                      const Icon(
+                        Icons.delete,
+                        semanticLabel: "Delete",
+                      ),
+                      const Text("Delete"),
+                    ],
+                  ),
+                ),
               ];
             },
           )

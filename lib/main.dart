@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 import 'package:aru/card_item.dart';
 import 'package:aru/card.dart';
@@ -58,6 +59,29 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<ShopCard> cardList = [];
 
+  void _deleteCard(String selected) async {
+    ShopCard _toRemove;
+    List<ShopCard> _cardList = [];
+    List<String> prevCards = [];
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    var _local = prefs.getStringList('cards');
+    _cardList.addAll(_local.map((item) => new ShopCard.fromStringc(item)));
+
+    _cardList.forEach((ShopCard shopCard) {
+      if (shopCard.cardId != selected) {
+      prevCards.add(json.encode(shopCard.toJson()).toString());
+      } else {
+        _toRemove = shopCard;
+      }
+    });
+    prefs.setStringList("cards", prevCards);
+    _cardList.remove(_toRemove);
+    setState(() {
+      cardList = _cardList;
+    });
+  }
+
   _getInitial() async {
     List<ShopCard> _cardList = [];
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -67,11 +91,6 @@ class _MyHomePageState extends State<MyHomePage> {
     } else {
       _cardList.addAll(_local.map((item) => new ShopCard.fromStringc(item)));
     }
-    _cardList.addAll([
-      new ShopCard.full("yay", {"akiba": 41, "magic": 52}, false),
-      new ShopCard.full("hop", {"akiba": 20, "magic": 18}, true),
-      new ShopCard.full("yoo", {"akiba": 10, "magic": 5}, false),
-    ]);
     setState(() {
       cardList = _cardList;
     });
@@ -97,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: cardList.isEmpty
             ? [new Text("No data")]
             : cardList.map((ShopCard card) {
-                return new Cardrow(card);
+                return new Cardrow(card, _deleteCard);
               }).toList(),
       ),
       bottomNavigationBar: new Container(
