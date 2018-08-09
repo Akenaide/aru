@@ -79,16 +79,20 @@ class _CardItemState extends State<Cardrow> {
             onChanged: toggleBought,
           ),
           new PopupMenuButton(
+            onSelected: (String action) {
+              switch (action) {
+                case "edit":
+                  Navigator.of(context).pushNamed('/editelement');
+                  cacheSelectedCard(widget._shopCard);
+                  break;
+                default:
+              }
+            },
             itemBuilder: (context) {
               return [
                 new PopupMenuItem(
-                  child: new FlatButton(
-                    child: new Text("Add shop"),
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/editelement');
-                      cacheSelectedCard(widget._shopCard);
-                    },
-                  ),
+                  value: "edit",
+                  child: new Text("Edit"),
                 )
               ];
             },
