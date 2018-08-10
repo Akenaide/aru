@@ -70,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     _cardList.forEach((ShopCard shopCard) {
       if (shopCard.cardId != selected) {
-      prevCards.add(json.encode(shopCard.toJson()).toString());
+        prevCards.add(json.encode(shopCard.toJson()).toString());
       } else {
         _toRemove = shopCard;
       }

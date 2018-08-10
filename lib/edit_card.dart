@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:aru/card.dart';
+import 'package:aru/new_shop_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EditElementWidget extends StatefulWidget {
@@ -17,7 +18,6 @@ class _EditElement extends State<EditElementWidget> {
 
   ShopCard shopCard;
   List<Shop> shopList = [];
-  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -38,61 +38,23 @@ class _EditElement extends State<EditElementWidget> {
   }
 
   _addElement() async {
-    if (_formKey.currentState.validate()) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      this.shopList.forEach((Shop shop) {
-        this.shopCard.stores[shop.name] = shop.price;
-      });
-      this.shopCard.cardId = _cardIdCtrl.text;
-      List<String> prevCards = [];
-      prevCards.add(json.encode(shopCard.toJson()).toString());
-      prevCards.addAll(prefs.getStringList("cards"));
-      prefs.setStringList("cards", prevCards);
-      Navigator.of(context).pushNamed("/");
-    }
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    this.shopCard.stores = new Map<String, int>();
+    this.shopList.forEach((Shop shop) {
+      this.shopCard.stores[shop.name] = shop.price;
+    });
+    this.shopCard.cardId = _cardIdCtrl.text;
+    List<String> prevCards = [];
+    prevCards.add(json.encode(shopCard.toJson()).toString());
+    prevCards.addAll(prefs.getStringList("cards"));
+    prefs.setStringList("cards", prevCards);
+    Navigator.of(context).pushNamed("/");
   }
 
   List<Widget> buildShopList() {
     List<Widget> shopsW = [];
     for (int i = 0; i < this.shopList.length; i++) {
-      shopsW.add(
-        new Card(
-          margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
-          elevation: 10.0,
-          child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Text(
-                "Shop name",
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              new TextFormField(
-                initialValue: this.shopList[i].name,
-                decoration: new InputDecoration(
-                  hintText: "Shop",
-                  icon: const Icon(Icons.business),
-                ),
-                maxLength: 10,
-                onFieldSubmitted: (_val) => this.shopList[i].name = _val.trim(),
-              ),
-              const Text(
-                "Price",
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              new TextFormField(
-                initialValue: this.shopList[i].price.toString(),
-                decoration: new InputDecoration(
-                  hintText: "Price",
-                  icon: const Icon(Icons.attach_money),
-                ),
-                keyboardType: TextInputType.number,
-                onFieldSubmitted: (_val) =>
-                    this.shopList[i].price = int.parse(_val),
-              ),
-            ],
-          ),
-        ),
-      );
+      shopsW.add(new NewShopWidget(shopList[i]));
     }
     shopsW.add(
       new Row(
@@ -116,9 +78,9 @@ class _EditElement extends State<EditElementWidget> {
       future: getSelected(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
-          print(snapshot.data);
-          if (snapshot.data != null) {
+          if (snapshot.data != null && this.shopList.isEmpty) {
             this.shopCard = new ShopCard.fromStringc(snapshot.data);
+            _cardIdCtrl.text = this.shopCard.cardId;
             this.shopCard.stores.forEach((String name, int price) {
               this.shopList.add(new Shop.full(name, price));
             });
@@ -135,11 +97,8 @@ class _EditElement extends State<EditElementWidget> {
                 ),
                 controller: _cardIdCtrl,
               ),
-              new Form(
-                key: _formKey,
-                child: new Column(
-                  children: buildShopList(),
-                ),
+              new Column(
+                children: buildShopList(),
               ),
             ],
           ),
