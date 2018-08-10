@@ -26,12 +26,14 @@ class _NewShop extends State<NewShopWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           new Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               const Text(
                 "Shop name",
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               new IconButton(
+                color: Colors.red,
                 icon: const Icon(Icons.delete),
                 tooltip: 'Delete shop',
                 onPressed: () => widget._delete(widget.shop.name),
