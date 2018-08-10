@@ -16,32 +16,28 @@ class _NewShop extends State<NewShopWidget> {
   TextEditingController _priceCtrl = new TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
+  Widget build(BuildContext context) {
     _nameCtrl.text = this.widget.shop.name;
     _priceCtrl.text = this.widget.shop.price.toString();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return new Card(
       margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
       elevation: 10.0,
       child: new Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          new Row(children: <Widget>[
-
-          const Text(
-            "Shop name",
-            style: const TextStyle(fontWeight: FontWeight.bold),
+          new Row(
+            children: <Widget>[
+              const Text(
+                "Shop name",
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              new IconButton(
+                icon: const Icon(Icons.delete),
+                tooltip: 'Delete shop',
+                onPressed: () => widget._delete(widget.shop.name),
+              )
+            ],
           ),
-          new IconButton(
-            icon: const Icon(Icons.delete),
-            tooltip: 'Delete shop',
-            onPressed: () => this.widget._delete(this.widget.shop.name),
-          )
-          ],),
           new TextField(
             controller: _nameCtrl,
             decoration: new InputDecoration(

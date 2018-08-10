@@ -19,17 +19,22 @@ class _EditElement extends State<EditElementWidget> {
   List<Shop> shopList = [];
   bool _checkValue = false;
 
-  @override
-  void initState() {
-    super.initState();
-    // this.shopCard = new ShopCard.empty("");
-  }
-
-  Future<String> getSelected() async {
+  void getSelected() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String selectedString = prefs.getString("selectedCard");
-    prefs.remove("selectedCard");
-    return selectedString;
+    List<Shop> _shopList = [];
+    ShopCard _shopCard;
+
+    _shopCard = new ShopCard.fromStringc(selectedString);
+    _cardIdCtrl.text = _shopCard.cardId;
+    _checkValue = _shopCard.bought;
+    _shopCard.stores.forEach((String name, int price) {
+      _shopList.add(new Shop.full(name, price));
+    });
+    setState(() {
+      shopCard = _shopCard;
+      shopList = _shopList;
+    });
   }
 
   void cleanSelected() async {
@@ -37,81 +42,78 @@ class _EditElement extends State<EditElementWidget> {
     prefs.remove("selectedCard");
   }
 
+  void _delete(String shop) {
+    List<Shop> _shopList = [];
+    print("jkl - $shop");
+    _shopList.addAll(this.shopList.where((item) => item.name != shop));
+    setState(() {
+      shopList = _shopList;
+    });
+  }
+
   _addElement() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> prevCards = [];
+
     this.shopCard.stores = new Map<String, int>();
     this.shopList.forEach((Shop shop) {
       this.shopCard.stores[shop.name] = shop.price;
     });
     this.shopCard.cardId = _cardIdCtrl.text;
-    List<String> prevCards = [];
+
     prevCards.add(shopCard.prepToString());
     prevCards.addAll(prefs.getStringList("cards"));
     prefs.setStringList("cards", prevCards);
     Navigator.of(context).pushNamed("/");
   }
 
-  List<Widget> buildShopList() {
-    List<Widget> shopsW = [];
-    for (int i = 0; i < this.shopList.length; i++) {
-      shopsW.add(new NewShopWidget(shopList[i]));
-    }
-    return shopsW;
+  @override
+  void initState() {
+    super.initState();
+    getSelected();
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget _body = FutureBuilder(
-      future: getSelected(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data != null && this.shopList.isEmpty) {
-            this.shopCard = new ShopCard.fromStringc(snapshot.data);
-            _cardIdCtrl.text = this.shopCard.cardId;
-            _checkValue = this.shopCard.bought;
-            this.shopCard.stores.forEach((String name, int price) {
-              this.shopList.add(new Shop.full(name, price));
-            });
-          }
-        }
-        return new SingleChildScrollView(
-          child: new Column(
-            children: <Widget>[
-              new TextField(
-                decoration: new InputDecoration(
-                  hintText: "Card",
-                  contentPadding: new EdgeInsets.all(10.0),
-                  icon: const Icon(Icons.payment),
-                ),
-                controller: _cardIdCtrl,
-              ),
-              new Column(
-                children: buildShopList(),
-              ),
-              new Row(
-                children: <Widget>[
-                  new Text("Bought"),
-                  new Checkbox(
-                    value: _checkValue, // TODO: Dind't found a way to directly init with obj
-                    onChanged: (_val) {
-                      _checkValue = _val;
-                      setState(() {
-                          this.shopCard.bought = _val;
-                        });
-                      },
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("Edit element"),
       ),
-      body: _body,
+      body: new SingleChildScrollView(
+        child: new Column(
+          children: <Widget>[
+            new TextField(
+              decoration: new InputDecoration(
+                hintText: "Card",
+                contentPadding: new EdgeInsets.all(10.0),
+                icon: const Icon(Icons.payment),
+              ),
+              controller: _cardIdCtrl,
+            ),
+            new Column(
+              children: this.shopList.map((Shop shop) {
+                print("--- ${shop.name}");
+                return new NewShopWidget(shop, this._delete);
+              }).toList(),
+            ),
+            new Row(
+              children: <Widget>[
+                new Text("Bought"),
+                new Checkbox(
+                  value:
+                      _checkValue, // TODO: Dind't found a way to directly init with obj
+                  onChanged: (_val) {
+                    _checkValue = _val;
+                    setState(() {
+                      this.shopCard.bought = _val;
+                    });
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
       bottomNavigationBar: new BottomAppBar(
         color: Colors.blue,
         child: new Row(
