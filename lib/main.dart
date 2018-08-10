@@ -116,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: cardList.isEmpty
             ? [new Text("No data")]
             : cardList.map((ShopCard card) {
-                return new Cardrow(card, _deleteCard);
+                return new Cardrow(card, _deleteCard, cardList.indexOf(card));
               }).toList(),
       ),
       bottomNavigationBar: new Container(
