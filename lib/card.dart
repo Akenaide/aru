@@ -27,6 +27,10 @@ class ShopCard {
     };
   }
 
+  String prepToString() {
+    return json.encode(this.toJson()).toString();
+  }
+
   String cardId;
   Map<String, int> stores;
   bool bought;

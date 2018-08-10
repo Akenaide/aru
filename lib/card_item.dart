@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
 
 import 'package:aru/card.dart';
 
@@ -56,7 +55,7 @@ class _CardItemState extends State<Cardrow> {
 
   void cacheSelectedCard(ShopCard selected) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("selectedCard", json.encode(selected.toJson()).toString());
+    prefs.setString("selectedCard", selected.prepToString());
   }
 
   @override

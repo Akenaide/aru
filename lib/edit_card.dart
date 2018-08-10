@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:aru/card.dart';
 import 'package:aru/new_shop_widget.dart';
@@ -46,7 +45,7 @@ class _EditElement extends State<EditElementWidget> {
     });
     this.shopCard.cardId = _cardIdCtrl.text;
     List<String> prevCards = [];
-    prevCards.add(json.encode(shopCard.toJson()).toString());
+    prevCards.add(shopCard.prepToString());
     prevCards.addAll(prefs.getStringList("cards"));
     prefs.setStringList("cards", prevCards);
     Navigator.of(context).pushNamed("/");
