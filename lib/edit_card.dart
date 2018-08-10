@@ -44,7 +44,6 @@ class _EditElement extends State<EditElementWidget> {
 
   void _delete(String shop) {
     List<Shop> _shopList = [];
-    print("jkl - $shop");
     _shopList.addAll(this.shopList.where((item) => item.name != shop));
     setState(() {
       shopList = _shopList;
@@ -92,7 +91,6 @@ class _EditElement extends State<EditElementWidget> {
             ),
             new Column(
               children: this.shopList.map((Shop shop) {
-                print("--- ${shop.name}");
                 return new NewShopWidget(shop, this._delete);
               }).toList(),
             ),
