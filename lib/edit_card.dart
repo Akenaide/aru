@@ -18,6 +18,7 @@ class _EditElement extends State<EditElementWidget> {
 
   ShopCard shopCard;
   List<Shop> shopList = [];
+  bool _checkValue = false;
 
   @override
   void initState() {
@@ -56,19 +57,6 @@ class _EditElement extends State<EditElementWidget> {
     for (int i = 0; i < this.shopList.length; i++) {
       shopsW.add(new NewShopWidget(shopList[i]));
     }
-    shopsW.add(
-      new Row(
-        children: <Widget>[
-          new Text("Bought"),
-          new Checkbox(
-            value: this.shopCard?.bought,
-            onChanged: (_val) => setState(() {
-                  this.shopCard.bought = _val;
-                }),
-          ),
-        ],
-      ),
-    );
     return shopsW;
   }
 
@@ -81,6 +69,7 @@ class _EditElement extends State<EditElementWidget> {
           if (snapshot.data != null && this.shopList.isEmpty) {
             this.shopCard = new ShopCard.fromStringc(snapshot.data);
             _cardIdCtrl.text = this.shopCard.cardId;
+            _checkValue = this.shopCard.bought;
             this.shopCard.stores.forEach((String name, int price) {
               this.shopList.add(new Shop.full(name, price));
             });
@@ -99,6 +88,20 @@ class _EditElement extends State<EditElementWidget> {
               ),
               new Column(
                 children: buildShopList(),
+              ),
+              new Row(
+                children: <Widget>[
+                  new Text("Bought"),
+                  new Checkbox(
+                    value: _checkValue, // TODO: Dind't found a way to directly init with obj
+                    onChanged: (_val) {
+                      _checkValue = _val;
+                      setState(() {
+                          this.shopCard.bought = _val;
+                        });
+                      },
+                  ),
+                ],
               ),
             ],
           ),
