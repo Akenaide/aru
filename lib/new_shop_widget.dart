@@ -47,9 +47,7 @@ class _NewShop extends State<NewShopWidget> {
               icon: const Icon(Icons.business),
             ),
             maxLength: 10,
-            onChanged: (_val) => setState(() {
-                  this.widget.shop.name = _val;
-                }),
+            onChanged: (_val) => this.widget.shop.name = _val,
           ),
           const Text(
             "Price",
@@ -62,9 +60,7 @@ class _NewShop extends State<NewShopWidget> {
               icon: const Icon(Icons.attach_money),
             ),
             keyboardType: TextInputType.number,
-            onChanged: (_val) => setState(() {
-                  this.widget.shop.price = int.parse(_val);
-                }),
+            onChanged: (_val) => this.widget.shop.price = int.parse(_val),
           ),
         ],
       ),

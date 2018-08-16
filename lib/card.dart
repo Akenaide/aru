@@ -31,7 +31,8 @@ class ShopCard {
     return json.encode(this.toJson()).toString();
   }
 
-  static List<String> replaceIn(ShopCard newShop, ShopCard previousShop, List<String> allShops) {
+  static List<String> replaceIn(
+      ShopCard newShop, ShopCard previousShop, List<String> allShops) {
     List<String> result;
     List<ShopCard> shops = allShops.map((String _toConvert) {
       return new ShopCard.fromStringc(_toConvert);

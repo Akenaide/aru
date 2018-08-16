@@ -61,7 +61,8 @@ class _EditElement extends State<EditElementWidget> {
     });
     updatedShop.cardId = _cardIdCtrl.text;
 
-    prevCards = ShopCard.replaceIn(updatedShop, this.shopCard, prefs.getStringList("cards"));
+    prevCards = ShopCard.replaceIn(
+        updatedShop, this.shopCard, prefs.getStringList("cards"));
     prefs.setStringList("cards", prevCards);
     Navigator.of(context).pushNamed("/");
   }
