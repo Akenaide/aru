@@ -31,6 +31,23 @@ class ShopCard {
     return json.encode(this.toJson()).toString();
   }
 
+  static List<String> replaceIn(ShopCard newShop, ShopCard previousShop, List<String> allShops) {
+    List<String> result;
+    List<ShopCard> shops = allShops.map((String _toConvert) {
+      return new ShopCard.fromStringc(_toConvert);
+    }).toList();
+    num index = shops.indexWhere((ShopCard _shop) {
+      return _shop.cardId == newShop.cardId;
+    });
+    shops.insert(index, newShop);
+    shops.removeAt(index + 1);
+
+    result = shops.map((ShopCard _shop) {
+      return _shop.prepToString();
+    }).toList();
+    return result;
+  }
+
   String cardId;
   Map<String, int> stores;
   bool bought;

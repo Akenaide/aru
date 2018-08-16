@@ -53,15 +53,15 @@ class _EditElement extends State<EditElementWidget> {
   _addElement() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> prevCards = [];
+    ShopCard updatedShop = new ShopCard.empty("");
 
-    this.shopCard.stores = new Map<String, int>();
+    updatedShop.stores = new Map<String, int>();
     this.shopList.forEach((Shop shop) {
-      this.shopCard.stores[shop.name] = shop.price;
+      updatedShop.stores[shop.name] = shop.price;
     });
-    this.shopCard.cardId = _cardIdCtrl.text;
+    updatedShop.cardId = _cardIdCtrl.text;
 
-    prevCards.add(shopCard.prepToString());
-    prevCards.addAll(prefs.getStringList("cards"));
+    prevCards = ShopCard.replaceIn(updatedShop, this.shopCard, prefs.getStringList("cards"));
     prefs.setStringList("cards", prevCards);
     Navigator.of(context).pushNamed("/");
   }
