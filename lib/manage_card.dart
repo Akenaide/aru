@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
 
 import 'package:aru/card.dart';
 import 'package:aru/new_shop_widget.dart';
@@ -13,47 +12,23 @@ class ManageShopCardWidget extends StatefulWidget {
   State createState() {
     switch (this.action) {
       case "edit":
-        return new _EditElement();
+        return new _EditElement("Edit");
         break;
       case "add":
-        return new _AddElement();
+        return new _AddElement("Add");
         break;
       default:
-        return new _AddElement();
+        return new _AddElement("Add");
     }
   }
 }
 
-class _EditElement extends State<ManageShopCardWidget> {
+class _ManageElement extends State<ManageShopCardWidget> {
+  final String title;
   final TextEditingController _cardIdCtrl = new TextEditingController();
-  final String title = "Edit Element";
-
-  ShopCard shopCard;
   List<Shop> shopList = [];
+  ShopCard shopCard;
   bool _checkValue = false;
-
-  void getSelected() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String selectedString = prefs.getString("selectedCard");
-    List<Shop> _shopList = [];
-    ShopCard _shopCard;
-
-    _shopCard = new ShopCard.fromStringc(selectedString);
-    _cardIdCtrl.text = _shopCard.cardId;
-    _checkValue = _shopCard.bought;
-    _shopCard.stores.forEach((String name, int price) {
-      _shopList.add(new Shop.full(name, price));
-    });
-    setState(() {
-      shopCard = _shopCard;
-      shopList = _shopList;
-    });
-  }
-
-  void cleanSelected() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove("selectedCard");
-  }
 
   void _delete(String shop) {
     List<Shop> _shopList = [];
@@ -63,34 +38,33 @@ class _EditElement extends State<ManageShopCardWidget> {
     });
   }
 
-  _addElement() async {
+  List<String> _performAdd(List<String> dbCards, [ShopCard updatedShop]) {
+    throw new UnimplementedError();
+  }
+
+  void _addElement() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> prevCards = [];
     ShopCard updatedShop = new ShopCard.empty("");
+    List<String> dbCards = prefs.getStringList("cards");
 
     updatedShop.stores = new Map<String, int>();
     this.shopList.forEach((Shop shop) {
       updatedShop.stores[shop.name] = shop.price;
     });
     updatedShop.cardId = _cardIdCtrl.text;
+    updatedShop.bought = this.shopCard.bought;
+    prevCards = _performAdd(dbCards, updatedShop);
 
-    prevCards = ShopCard.replaceIn(
-        updatedShop, this.shopCard, prefs.getStringList("cards"));
     prefs.setStringList("cards", prevCards);
     Navigator.of(context).pushNamed("/");
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getSelected();
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text("Edit element"),
+        title: new Text("${this.title} element"),
       ),
       body: new SingleChildScrollView(
         child: new Column(
@@ -147,97 +121,60 @@ class _EditElement extends State<ManageShopCardWidget> {
       ),
     );
   }
+
+  _ManageElement(this.title);
 }
 
-class _AddElement extends State<ManageShopCardWidget> {
-  final TextEditingController _cardIdCtrl = new TextEditingController();
+class _EditElement extends _ManageElement {
+  void _getSelected() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String selectedString = prefs.getString("selectedCard");
+    List<Shop> _shopList = [];
+    ShopCard _shopCard;
 
-  ShopCard shopCard;
-  List<Shop> shopList = [
-    new Shop.empty(),
-  ];
+    _shopCard = new ShopCard.fromStringc(selectedString);
+    _cardIdCtrl.text = _shopCard.cardId;
+    _checkValue = _shopCard.bought;
+    _shopCard.stores.forEach((String name, int price) {
+      _shopList.add(new Shop.full(name, price));
+    });
+    setState(() {
+      shopCard = _shopCard;
+      shopList = _shopList;
+    });
+  }
+
+  @override
+  List<String> _performAdd(dbCards, [ShopCard updatedShop]) {
+    return ShopCard.replaceIn(updatedShop, this.shopCard, dbCards);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getSelected();
+  }
+
+  _EditElement(title) : super(title);
+}
+
+class _AddElement extends _ManageElement {
+  @override
+  List<String> _performAdd(dbCards, [ShopCard updatedShop]) {
+    List<String> prevCards = [];
+    prevCards.add(updatedShop.prepToString());
+    prevCards.addAll(dbCards);
+    return prevCards;
+  }
 
   @override
   void initState() {
     super.initState();
     this.shopCard = new ShopCard.empty("");
+    this.shopList.add(
+          new Shop.empty(),
+        );
   }
 
-  void _delete(String shop) {
-    List<Shop> _shopList = [];
-    _shopList.addAll(this.shopList.where((item) => item.name != shop));
-    setState(() {
-      shopList = _shopList;
-    });
-  }
-
-  _addElement() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    this.shopList.forEach((Shop shop) {
-      this.shopCard.stores[shop.name] = shop.price;
-    });
-    this.shopCard.cardId = _cardIdCtrl.text;
-    List<String> prevCards = [];
-    prevCards.add(shopCard.prepToString());
-    prevCards.addAll(prefs.getStringList("cards"));
-    prefs.setStringList("cards", prevCards);
-    Navigator.of(context).pushNamed("/");
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    List<Widget> shopsW = [];
-    for (int i = 0; i < this.shopList.length; i++) {
-      shopsW.add(new NewShopWidget(this.shopList[i], _delete));
-    }
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("New element"),
-      ),
-      body: new ListView(
-        children: <Widget>[
-          new TextField(
-            decoration: new InputDecoration(
-              hintText: "Card",
-              contentPadding: new EdgeInsets.all(10.0),
-            ),
-            controller: _cardIdCtrl,
-          ),
-          new Column(
-            children: shopsW,
-          ),
-          new Row(
-            children: <Widget>[
-              new Text("Bought"),
-              new Checkbox(
-                value: this.shopCard.bought,
-                onChanged: (_val) => setState(() {
-                      this.shopCard.bought = _val;
-                    }),
-              ),
-            ],
-          ),
-        ],
-      ),
-      bottomNavigationBar: new BottomAppBar(
-        color: Colors.blue,
-        child: new Row(
-          children: <Widget>[
-            new IconButton(
-              onPressed: () {
-                setState(() {
-                  this.shopList.add(new Shop.empty());
-                });
-              },
-              tooltip: 'New element',
-              icon: new Icon(Icons.add),
-            ),
-            new RaisedButton(
-              onPressed: _addElement,
-            )
-          ],
-        ),
-      ),
-    );
-  }
+  _AddElement(title) : super(title);
 }
