@@ -57,7 +57,7 @@ class _ManageElement extends State<ManageShopCardWidget> {
     prevCards = _performAdd(dbCards, updatedShop);
 
     prefs.setStringList("cards", prevCards);
-    Navigator.of(context).pushNamed("/");
+    Navigator.of(context).pushReplacementNamed("/");
   }
 
   @override
