@@ -65,6 +65,13 @@ class _ManageElement extends State<ManageShopCardWidget> {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("${this.title} element"),
+        actions: <Widget>[
+          new IconButton(
+            icon: const Icon(Icons.save),
+            tooltip: 'Save',
+            onPressed: _addElement,
+          )
+        ],
       ),
       body: new SingleChildScrollView(
         child: new Column(
@@ -100,24 +107,14 @@ class _ManageElement extends State<ManageShopCardWidget> {
           ],
         ),
       ),
-      bottomNavigationBar: new BottomAppBar(
-        color: Colors.blue,
-        child: new Row(
-          children: <Widget>[
-            new IconButton(
-              onPressed: () {
-                setState(() {
-                  this.shopList.add(new Shop.empty());
-                });
-              },
-              tooltip: 'New element',
-              icon: new Icon(Icons.add),
-            ),
-            new RaisedButton(
-              onPressed: _addElement,
-            )
-          ],
-        ),
+      floatingActionButton: new FloatingActionButton(
+        onPressed: () {
+          setState(() {
+            this.shopList.add(new Shop.empty());
+          });
+        },
+        tooltip: 'New element',
+        child: new Icon(Icons.add),
       ),
     );
   }
