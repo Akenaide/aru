@@ -15,10 +15,44 @@ class _NewShop extends State<NewShopWidget> {
   TextEditingController _nameCtrl = new TextEditingController();
   TextEditingController _priceCtrl = new TextEditingController();
 
+  void _updateName() {
+    this.widget.shop.name = _nameCtrl.text;
+  }
+
+  void _updatePrice() {
+    this.widget.shop.price = int.parse(_priceCtrl.text);
+  }
+
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     _nameCtrl.text = this.widget.shop.name;
     _priceCtrl.text = this.widget.shop.price.toString();
+
+    _nameCtrl.addListener(_updateName);
+    _priceCtrl.addListener(_updatePrice);
+  }
+
+  @override
+  void dispose() {
+    _nameCtrl.removeListener(_updateName);
+    _priceCtrl.removeListener(_updatePrice);
+    _nameCtrl.dispose();
+    _priceCtrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(NewShopWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.shop != this.widget.shop) {
+      _nameCtrl.text = this.widget.shop.name;
+      _priceCtrl.text = this.widget.shop.price.toString();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return new Card(
       margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
       elevation: 10.0,
@@ -47,7 +81,6 @@ class _NewShop extends State<NewShopWidget> {
               icon: const Icon(Icons.business),
             ),
             maxLength: 10,
-            onChanged: (_val) => this.widget.shop.name = _val,
           ),
           const Text(
             "Price",
@@ -60,7 +93,6 @@ class _NewShop extends State<NewShopWidget> {
               icon: const Icon(Icons.attach_money),
             ),
             keyboardType: TextInputType.number,
-            onChanged: (_val) => this.widget.shop.price = int.parse(_val),
           ),
         ],
       ),
