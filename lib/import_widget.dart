@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:aru/card.dart';
 
@@ -22,7 +23,7 @@ class _ImportState extends State<ImportWidget> {
     return http.post(this.widget.pmUrl, body: {"url": wsdeck});
   }
 
-  void _import() async {
+  void _fetch() async {
     var data =
         await fetchDeck("${this.widget.wsdeckUrl}${this._controller.text}/");
     var _cards = CardWS.listFromString(data.body);
@@ -30,6 +31,19 @@ class _ImportState extends State<ImportWidget> {
       this.cards.addAll(_cards);
       _controller.clear();
     });
+  }
+
+  void _import() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> dbCards = prefs.getStringList("cards");
+
+    for (var card in this.cards) {
+      if (card.selected) {
+        dbCards.insert(0, new ShopCard.fromCardWS(card).prepToString());
+      }
+    }
+    prefs.setStringList("cards", dbCards);
+    Navigator.of(context).pushReplacementNamed("/");
   }
 
   @override
@@ -40,13 +54,7 @@ class _ImportState extends State<ImportWidget> {
         actions: <Widget>[
           new IconButton(
             icon: new Icon(Icons.save),
-            onPressed: () {
-              for (var card in this.cards) {
-                if (card.selected) {
-                  print(card.id);
-                }
-              }
-            },
+            onPressed: _import,
           )
         ],
       ),
@@ -64,7 +72,7 @@ class _ImportState extends State<ImportWidget> {
                 color: Colors.red,
                 icon: const Icon(Icons.file_download),
                 tooltip: 'Delete shop',
-                onPressed: _import,
+                onPressed: _fetch,
               )
             ],
           ),
@@ -73,7 +81,7 @@ class _ImportState extends State<ImportWidget> {
             controller: this._controller,
             keyboardType: TextInputType.number,
             onSubmitted: (_val) {
-              _import();
+              _fetch();
             },
           ),
           new Column(

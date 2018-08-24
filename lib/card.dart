@@ -19,6 +19,12 @@ class ShopCard {
     });
   }
 
+  ShopCard.fromCardWS(CardWS card) {
+    this.cardId = card.id;
+    this.bought = false;
+    this.stores = {"yyt": card.price};
+  }
+
   dynamic toJson() {
     return {
       "cardId": this.cardId,
@@ -69,7 +75,7 @@ class CardWS {
   String id;
   int amount;
   bool selected = false;
-  // int price;
+  int price;
   // String imageUrl;
 
   static List<CardWS> listFromString(String elements) {
@@ -87,5 +93,6 @@ class CardWS {
   CardWS.fromJson(Map<String, dynamic> jCard) {
     this.id = jCard["ID"];
     this.amount = jCard["Amount"];
+    this.price = jCard["Price"];
   }
 }
