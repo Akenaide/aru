@@ -69,7 +69,7 @@ class _CardItemState extends State<Cardrow> {
         child: new Row(
           children: <Widget>[
             new SizedBox(
-                width: 70.0,
+                width: 100.0,
                 child: new Text(
                   widget._shopCard.cardId,
                 )),

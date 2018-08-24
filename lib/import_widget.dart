@@ -27,6 +27,9 @@ class _ImportState extends State<ImportWidget> {
     var data =
         await fetchDeck("${this.widget.wsdeckUrl}${this._controller.text}/");
     var _cards = CardWS.listFromString(data.body);
+    _cards.sort((CardWS a, CardWS b) {
+      return a.id.compareTo(b.id);
+    });
     setState(() {
       this.cards.addAll(_cards);
       _controller.clear();
