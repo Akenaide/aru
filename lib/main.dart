@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:aru/card_item.dart';
 import 'package:aru/card.dart';
 import 'package:aru/manage_card.dart';
+import 'package:aru/import_widget.dart';
 
 void main() {
   runApp(new MyApp());
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
             new ManageShopCardWidget("add"),
         '/editelement': (BuildContext context) =>
             new ManageShopCardWidget("edit"),
+        '/import': (BuildContext context) => new ImportWidget(),
       },
     );
   }
@@ -113,6 +115,21 @@ class _MyHomePageState extends State<MyHomePage> {
         // our appbar title.
         title: new Text(widget.title),
       ),
+      drawer: new Drawer(
+          child: new ListView(
+        children: <Widget>[
+          const DrawerHeader(
+            child: const Text("Head"),
+          ),
+          new ListTile(
+            leading: new Icon(Icons.file_download),
+            title: const Text("Import from wsdeck"),
+            onTap: () {
+              Navigator.of(context).pushNamed("/import");
+            },
+          ),
+        ],
+      )),
       body: new ListView(
         children: cardList.isEmpty
             ? [new Text("No data")]
@@ -120,16 +137,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 return new Cardrow(card, _deleteCard, cardList.indexOf(card));
               }).toList(),
       ),
-      bottomNavigationBar: new Container(
-        color: Colors.grey,
-        child: new FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).pushNamed('/addelement');
-          },
-          tooltip: 'New element',
-          child: new Icon(Icons.add),
-        ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      floatingActionButton: new FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).pushNamed('/addelement');
+        },
+        tooltip: 'New element',
+        child: new Icon(Icons.add),
+      ),
     );
   }
 }

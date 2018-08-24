@@ -64,3 +64,28 @@ class Shop {
     price = 0;
   }
 }
+
+class CardWS {
+  String id;
+  int amount;
+  bool selected = false;
+  // int price;
+  // String imageUrl;
+
+  static List<CardWS> listFromString(String elements) {
+    List<CardWS> result = [];
+    var jElements = json.decode(elements);
+    for (Map<String, dynamic> sCard in jElements) {
+      // Little hack to hide the Total
+      if (sCard["ID"] != "TOTAL") {
+        result.add(CardWS.fromJson(sCard));
+      }
+    }
+    return result;
+  }
+
+  CardWS.fromJson(Map<String, dynamic> jCard) {
+    this.id = jCard["ID"];
+    this.amount = jCard["Amount"];
+  }
+}
