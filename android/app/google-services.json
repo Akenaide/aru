@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1003580878297",
+    "firebase_url": "https://arumobile-c208c.firebaseio.com",
+    "project_id": "arumobile-c208c",
+    "storage_bucket": "arumobile-c208c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1003580878297:android:6e5613c599dea409",
+        "android_client_info": {
+          "package_name": "moe.naide.aru"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1003580878297-3h3phfhrpluqkqscln42gtapqsmjbu8k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8Ocv8xff24RIort9vbDz2owIdkLI0T7o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

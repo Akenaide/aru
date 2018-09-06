@@ -1,4 +1,4 @@
-package com.yourcompany.aru;
+package moe.naide.aru;
 
 import android.os.Bundle;
 
