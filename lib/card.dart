@@ -10,13 +10,9 @@ class ShopCard {
   }
 
   ShopCard.fromStringc(data) {
-    var _json = json.decode(data);
-    cardId = _json["cardId"];
-    bought = _json["bought"];
-    stores = new Map();
-    _json["stores"].forEach((String key, value) {
-      stores.putIfAbsent(key, () => value);
-    });
+    cardId = data["cardId"];
+    bought = data["bought"];
+    stores = Map.castFrom(data["stores"]);
   }
 
   ShopCard.fromCardWS(CardWS card) {

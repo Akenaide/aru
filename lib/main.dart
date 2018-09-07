@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:convert';
+import 'dart:async';
 
 import 'package:aru/card_item.dart';
 import 'package:aru/card.dart';
@@ -86,17 +87,17 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  _getInitial() async {
+  Future<void> _getInitial() async {
+    String path = 'cards/TT2KX6lQljP6sB5WFgDf';
     List<ShopCard> _cardList = [];
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var _local = prefs.getStringList('cards');
-    if (_local == null) {
-      prefs.setStringList("cards", []);
-    } else {
-      _cardList.addAll(_local.map((item) => new ShopCard.fromStringc(item)));
-    }
-    setState(() {
-      cardList = _cardList;
+    var ff = Firestore.instance.document(path).get();
+    return ff.then((data) {
+      for (var f in data['shopcard']) {
+        _cardList.add(new ShopCard.fromStringc(f));
+      }
+      setState(() {
+        cardList = _cardList;
+      });
     });
   }
 
@@ -131,12 +132,15 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       )),
-      body: new ListView(
-        children: cardList.isEmpty
-            ? [new Text("No data")]
-            : cardList.map((ShopCard card) {
-                return new Cardrow(card, _deleteCard, cardList.indexOf(card));
-              }).toList(),
+      body: new RefreshIndicator(
+        child: new ListView(
+          children: cardList.isEmpty
+              ? [new Text("No data")]
+              : cardList.map((ShopCard card) {
+                  return new Cardrow(card, _deleteCard, cardList.indexOf(card));
+                }).toList(),
+        ),
+        onRefresh: _getInitial,
       ),
       floatingActionButton: new FloatingActionButton(
         onPressed: () {
