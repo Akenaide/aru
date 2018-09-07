@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:aru/card.dart';
 import 'package:aru/new_shop_widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:aru/ressources.dart';
 
 class ManageShopCardWidget extends StatefulWidget {
   final String action;
@@ -38,15 +39,18 @@ class _ManageElement extends State<ManageShopCardWidget> {
     });
   }
 
-  List<String> _performAdd(List<String> dbCards, [ShopCard updatedShop]) {
+  List<ShopCard> _performAdd(List<ShopCard> dbCards, [ShopCard updatedShop]) {
     throw new UnimplementedError();
   }
 
   void _addElement() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> prevCards = [];
+    List<ShopCard> prevCards = [];
     ShopCard updatedShop = new ShopCard.empty("");
-    List<String> dbCards = prefs.getStringList("cards");
+    List<ShopCard> dbCards;
+
+    await Ressource.getAll().then((data) {
+      dbCards = data;
+    });
 
     updatedShop.stores = new Map<String, int>();
     this.shopList.forEach((Shop shop) {
@@ -56,7 +60,7 @@ class _ManageElement extends State<ManageShopCardWidget> {
     updatedShop.bought = this.shopCard.bought;
     prevCards = _performAdd(dbCards, updatedShop);
 
-    prefs.setStringList("cards", prevCards);
+    Ressource.update(prevCards);
     Navigator.of(context).pushReplacementNamed("/");
   }
 
@@ -142,7 +146,7 @@ class _EditElement extends _ManageElement {
   }
 
   @override
-  List<String> _performAdd(dbCards, [ShopCard updatedShop]) {
+  List<ShopCard> _performAdd(dbCards, [ShopCard updatedShop]) {
     return ShopCard.replaceIn(updatedShop, this.shopCard, dbCards);
   }
 
@@ -157,11 +161,9 @@ class _EditElement extends _ManageElement {
 
 class _AddElement extends _ManageElement {
   @override
-  List<String> _performAdd(dbCards, [ShopCard updatedShop]) {
-    List<String> prevCards = [];
-    prevCards.add(updatedShop.prepToString());
-    prevCards.addAll(dbCards);
-    return prevCards;
+  List<ShopCard> _performAdd(dbCards, [ShopCard updatedShop]) {
+    dbCards.add(updatedShop);
+    return dbCards;
   }
 
   @override

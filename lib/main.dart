@@ -65,23 +65,15 @@ class _MyHomePageState extends State<MyHomePage> {
   List<ShopCard> cardList = [];
 
   void _deleteCard(String selected) async {
-    ShopCard _toRemove;
     List<ShopCard> _cardList = [];
-    List<String> prevCards = [];
-    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    var _local = prefs.getStringList('cards');
-    _cardList.addAll(_local.map((item) => new ShopCard.fromStringc(item)));
-
-    _cardList.forEach((ShopCard shopCard) {
-      if (shopCard.cardId != selected) {
-        prevCards.add(json.encode(shopCard.toJson()).toString());
-      } else {
-        _toRemove = shopCard;
-      }
+    await Ressource.getAll().then((data) {
+      _cardList = data;
     });
-    prefs.setStringList("cards", prevCards);
-    _cardList.remove(_toRemove);
+
+    _cardList.removeWhere((ShopCard card) => card.cardId == selected);
+
+    Ressource.update(_cardList);
     setState(() {
       cardList = _cardList;
     });

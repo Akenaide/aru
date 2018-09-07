@@ -7,23 +7,25 @@ import 'package:aru/card.dart';
 const String PATH = 'cards/TT2KX6lQljP6sB5WFgDf';
 
 class Ressource {
-  static Future update(List<ShopCard> newCards, {String path = PATH}) {
+  static final fs = Firestore.instance.document(PATH);
+
+  static Future update(List<ShopCard> newCards) {
     Map<String, dynamic> _newCards = ShopCard.toFirestore(newCards);
-    var future = Firestore.instance.document(path).updateData(_newCards);
+    var future = fs.updateData(_newCards);
 
     return future;
   }
 
-  static Future getAll({String path = PATH, Completer completer}) async {
+  static Future getAll({Completer completer}) async {
     if (completer == null) {
       completer = new Completer();
     }
-    var future = Firestore.instance.document(path).get();
+    var future = fs.get();
     List<ShopCard> _cardList = [];
 
     future.then((data) {
       for (var f in data['shopcards']) {
-        _cardList.add(new ShopCard.fromStringc(f));
+        _cardList.add(new ShopCard.full(f["cardId"], Map.castFrom(f["stores"]), f["bought"]));
       }
       completer.complete(_cardList);
       return _cardList;
