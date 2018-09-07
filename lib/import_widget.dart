@@ -38,15 +38,18 @@ class _ImportState extends State<ImportWidget> {
   }
 
   void _import() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> dbCards = prefs.getStringList("cards");
+    List<ShopCard> dbCards;
+
+    await Ressource.getAll().then((data) {
+      dbCards = data;
+    });
 
     for (var card in this.cards) {
       if (card.selected) {
-        dbCards.insert(0, new ShopCard.fromCardWS(card).prepToString());
+        dbCards.insert(0, new ShopCard.fromCardWS(card));
       }
     }
-    prefs.setStringList("cards", dbCards);
+    Ressource.update(dbCards);
     Navigator.of(context).pushReplacementNamed("/");
   }
 

@@ -21,7 +21,7 @@ class ShopCard {
     this.stores = {"yyt": card.price};
   }
 
-  dynamic toJson() {
+  Map<String, dynamic> toJson() {
     return {
       "cardId": this.cardId,
       "bought": this.bought,
@@ -31,6 +31,14 @@ class ShopCard {
 
   String prepToString() {
     return json.encode(this.toJson()).toString();
+  }
+
+  static Map<String, dynamic> toFirestore(List<ShopCard> cards) {
+    return {
+      "shopcards": cards.map((f) {
+        return f.toJson();
+      }).toList()
+    };
   }
 
   static List<String> replaceIn(
