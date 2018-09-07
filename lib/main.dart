@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:convert';
 import 'dart:async';
 
@@ -8,6 +7,7 @@ import 'package:aru/card_item.dart';
 import 'package:aru/card.dart';
 import 'package:aru/manage_card.dart';
 import 'package:aru/import_widget.dart';
+import 'package:aru/ressources.dart';
 
 void main() {
   runApp(new MyApp());
@@ -88,17 +88,15 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _getInitial() async {
-    String path = 'cards/TT2KX6lQljP6sB5WFgDf';
-    List<ShopCard> _cardList = [];
-    var ff = Firestore.instance.document(path).get();
-    return ff.then((data) {
-      for (var f in data['shopcard']) {
-        _cardList.add(new ShopCard.fromStringc(f));
-      }
+    Completer _completer = new Completer();
+    Ressource.getAll(completer: _completer);
+
+    _completer.future.then((data) {
       setState(() {
-        cardList = _cardList;
+        cardList = data;
       });
     });
+    return _completer.future;
   }
 
   @override

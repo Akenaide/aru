@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:aru/card.dart';
+import 'package:aru/ressources.dart';
 
 class ImportWidget extends StatefulWidget {
   final String wsdeckUrl = "https://wsdecks.com/deck/";
