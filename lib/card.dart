@@ -10,13 +10,13 @@ class ShopCard {
   }
 
   ShopCard.fromStringc(data) {
-     var _json = json.decode(data);
-     cardId = _json["cardId"];
-     bought = _json["bought"];
-     stores = new Map();
-     _json["stores"].forEach((String key, value) {
-       stores.putIfAbsent(key, () => value);
-     });
+    var _json = json.decode(data);
+    cardId = _json["cardId"];
+    bought = _json["bought"];
+    stores = new Map();
+    _json["stores"].forEach((String key, value) {
+      stores.putIfAbsent(key, () => value);
+    });
   }
 
   ShopCard.fromCardWS(CardWS card) {
@@ -47,7 +47,6 @@ class ShopCard {
 
   static List<ShopCard> replaceIn(
       ShopCard newShop, ShopCard previousShop, List<ShopCard> allShops) {
-
     num index = allShops.indexWhere((ShopCard _shop) {
       return _shop.cardId == newShop.cardId;
     });
