@@ -5,32 +5,55 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:aru/card.dart';
 
 const String PATH = 'cards/TT2KX6lQljP6sB5WFgDf';
+const bool ENABLE_FS = true;
 
 class Ressource {
   static final fs = Firestore.instance.document(PATH);
 
-  static Future update(List<ShopCard> newCards) {
-    Map<String, dynamic> _newCards = ShopCard.toFirestore(newCards);
-    var future = fs.updateData(_newCards);
+  static Future update(List<ShopCard> newCards) async {
+    if (ENABLE_FS) {
+      Map<String, dynamic> _newCards = ShopCard.toFirestore(newCards);
+      var future = fs.updateData(_newCards);
 
-    return future;
+      return future;
+    } else {
+      List<String> prevCards = [];
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      prevCards = newCards.map((ShopCard card) {
+        return card.prepToString();
+      }).toList();
+      prefs.setStringList("cards", prevCards);
+    }
   }
 
   static Future getAll({Completer completer}) async {
     if (completer == null) {
       completer = new Completer();
     }
-    var future = fs.get();
     List<ShopCard> _cardList = [];
 
-    future.then((data) {
-      for (var f in data['shopcards']) {
-        _cardList.add(new ShopCard.full(
-            f["cardId"], Map.castFrom(f["stores"]), f["bought"]));
+    if (ENABLE_FS) {
+      var future = fs.get();
+
+      future.then((data) {
+        for (var f in data['shopcards']) {
+          _cardList.add(new ShopCard.full(
+              f["cardId"], Map.castFrom(f["stores"]), f["bought"]));
+        }
+        completer.complete(_cardList);
+        return _cardList;
+      });
+    } else {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var _local = prefs.getStringList('cards');
+      if (_local == null) {
+        prefs.setStringList("cards", []);
+      } else {
+        _cardList.addAll(_local.map((item) => new ShopCard.fromStringc(item)));
       }
       completer.complete(_cardList);
-      return _cardList;
-    });
+    }
     return completer.future;
   }
 }
