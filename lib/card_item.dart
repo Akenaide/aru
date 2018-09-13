@@ -32,18 +32,18 @@ class _ShopRowState extends State<ShopRow> {
   }
 }
 
-class Cardrow extends StatefulWidget {
+class CardWidget extends StatefulWidget {
   final ShopCard _shopCard;
   final Function(String) _delete;
   final int index;
 
-  Cardrow(this._shopCard, this._delete, this.index);
+  CardWidget(this._shopCard, this._delete, this.index);
 
   @override
   _CardItemState createState() => new _CardItemState();
 }
 
-class _CardItemState extends State<Cardrow> {
+class _CardItemState extends State<CardWidget> {
   _CardItemState();
   toggleBought(bool newValue) {
     setState(() {
@@ -67,8 +67,6 @@ class _CardItemState extends State<Cardrow> {
           new Expanded(
             child: new Image.network(
               widget._shopCard.imageurl,
-              // width: 30.0,
-              // height: 300.0,
             ),
           ),
           new Text("Quantity : 21"),
