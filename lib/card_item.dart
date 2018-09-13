@@ -69,7 +69,7 @@ class _CardItemState extends State<CardWidget> {
               widget._shopCard.imageurl,
             ),
           ),
-          new Text("Quantity : 21"),
+          new Text("Quantity : ${widget._shopCard.amount}"),
           new ShopRow(widget._shopCard),
         ],
       ),

@@ -1,13 +1,14 @@
 import "dart:convert";
 
 class ShopCard {
-  ShopCard.full(this.cardId, this.stores, this.bought, this.imageurl);
+  ShopCard.full(this.cardId, this.stores, this.bought, this.imageurl, this.amount);
 
   ShopCard.empty(String init) {
     cardId = init;
     bought = false;
     stores = new Map();
     imageurl = "";
+    amount = 0;
   }
 
   ShopCard.fromStringc(data) {
@@ -15,6 +16,7 @@ class ShopCard {
     cardId = _json["cardId"];
     bought = _json["bought"];
     imageurl = _json["imageurl"];
+    amount = _json["amount"];
     stores = new Map();
     _json["stores"].forEach((String key, value) {
       stores.putIfAbsent(key, () => value);
@@ -26,6 +28,7 @@ class ShopCard {
     this.bought = false;
     this.stores = {"yyt": card.price};
     this.imageurl = card.imageUrl;
+    this.amount = card.amount;
   }
 
   Map<String, dynamic> toJson() {
@@ -34,6 +37,7 @@ class ShopCard {
       "bought": this.bought,
       "stores": this.stores,
       "imageurl": this.imageurl,
+      "amount": this.amount,
     };
   }
 
@@ -63,6 +67,7 @@ class ShopCard {
   Map<String, int> stores;
   bool bought;
   String imageurl;
+  int amount;
 }
 
 class Shop {
