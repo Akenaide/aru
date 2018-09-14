@@ -19,14 +19,18 @@ class _ShopRowState extends State<ShopRow> {
   Widget build(BuildContext context) {
     List<Widget> shops = [];
     widget._shopCard.stores.forEach((String name, int price) {
-      shops.add(new Chip(
-        label: new Text(
-          "$name : $price",
-          overflow: TextOverflow.clip,
+      shops.add(new Text(
+        "$name : $price",
+        overflow: TextOverflow.clip,
+        style: const TextStyle(
+          fontSize: 13.0,
         ),
       ));
     });
-    return new Column(
+    return new Wrap(
+      alignment: WrapAlignment.start,
+      direction: Axis.horizontal,
+      spacing: 5.0,
       children: shops,
     );
   }
@@ -60,14 +64,62 @@ class _CardItemState extends State<CardWidget> {
   Widget build(BuildContext context) {
     return new Card(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          new Text(
-            widget._shopCard.cardId,
+          new Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              new Text(
+                widget._shopCard.cardId,
+                style: new TextStyle(fontSize: 12.0),
+              ),
+              new PopupMenuButton(
+                onSelected: (String action) {
+                  switch (action) {
+                    case "edit":
+                      Navigator.of(context).pushNamed('/editelement');
+                      cacheSelectedCard(widget._shopCard);
+                      break;
+
+                    case "delete":
+                      widget._delete(widget._shopCard.cardId);
+                      break;
+                    default:
+                  }
+                },
+                itemBuilder: (context) {
+                  return [
+                    new PopupMenuItem(
+                      value: "edit",
+                      child: new Row(
+                        children: <Widget>[
+                          const Icon(
+                            Icons.edit,
+                            semanticLabel: "Edit",
+                          ),
+                          const Text("Edit"),
+                        ],
+                      ),
+                    ),
+                    new PopupMenuItem(
+                      value: "delete",
+                      child: new Row(
+                        children: <Widget>[
+                          const Icon(
+                            Icons.delete,
+                            semanticLabel: "Delete",
+                          ),
+                          const Text("Delete"),
+                        ],
+                      ),
+                    ),
+                  ];
+                },
+              )
+            ],
           ),
-          new Expanded(
-            child: new Image.network(
-              widget._shopCard.imageurl,
-            ),
+          new Image.network(
+            widget._shopCard.imageurl,
           ),
           new Text("Quantity : ${widget._shopCard.amount}"),
           new ShopRow(widget._shopCard),

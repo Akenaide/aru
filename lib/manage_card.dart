@@ -27,6 +27,7 @@ class ManageShopCardWidget extends StatefulWidget {
 class _ManageElement extends State<ManageShopCardWidget> {
   final String title;
   final TextEditingController _cardIdCtrl = new TextEditingController();
+  final TextEditingController _cardQuantityCtrl = new TextEditingController();
   List<Shop> shopList = [];
   ShopCard shopCard;
   bool _checkValue = false;
@@ -41,6 +42,14 @@ class _ManageElement extends State<ManageShopCardWidget> {
 
   List<ShopCard> _performAdd(List<ShopCard> dbCards, [ShopCard updatedShop]) {
     throw new UnimplementedError();
+  }
+
+  void _add() {
+    _cardQuantityCtrl.text = (int.parse(_cardQuantityCtrl.text) + 1).toString();
+  }
+
+  void _sub() {
+    _cardQuantityCtrl.text = (int.parse(_cardQuantityCtrl.text) - 1).toString();
   }
 
   void _addElement() async {
@@ -58,6 +67,8 @@ class _ManageElement extends State<ManageShopCardWidget> {
     });
     updatedShop.cardId = _cardIdCtrl.text;
     updatedShop.bought = this.shopCard.bought;
+    updatedShop.imageurl = this.shopCard.imageurl;
+    updatedShop.amount = int.parse(_cardQuantityCtrl.text);
     prevCards = _performAdd(dbCards, updatedShop);
 
     Ressource.update(prevCards);
@@ -88,11 +99,6 @@ class _ManageElement extends State<ManageShopCardWidget> {
               ),
               controller: _cardIdCtrl,
             ),
-            new Column(
-              children: this.shopList.map((Shop shop) {
-                return new NewShopWidget(shop, this._delete);
-              }).toList(),
-            ),
             new Row(
               children: <Widget>[
                 new Text("Bought"),
@@ -106,7 +112,34 @@ class _ManageElement extends State<ManageShopCardWidget> {
                     });
                   },
                 ),
+                new Expanded(
+                  child: new TextField(
+                    decoration: new InputDecoration(
+                      hintText: "Quantity",
+                      contentPadding: new EdgeInsets.all(10.0),
+                      icon: const Icon(Icons.add_shopping_cart),
+                    ),
+                    controller: _cardQuantityCtrl,
+                    keyboardType: TextInputType.number,
+                  ),
+                ),
+                new IconButton(
+                  onPressed: _add,
+                  icon: const Icon(Icons.add),
+                ),
+                new IconButton(
+                  onPressed: _sub,
+                  icon: const Icon(Icons.remove),
+                ),
               ],
+            ),
+            new Column(
+              children: this.shopList.map((Shop shop) {
+                return new NewShopWidget(shop, this._delete);
+              }).toList(),
+            ),
+            new Row(
+              children: <Widget>[],
             ),
           ],
         ),
@@ -135,6 +168,7 @@ class _EditElement extends _ManageElement {
 
     _shopCard = new ShopCard.fromStringc(selectedString);
     _cardIdCtrl.text = _shopCard.cardId;
+    _cardQuantityCtrl.text = _shopCard.amount.toString();
     _checkValue = _shopCard.bought;
     _shopCard.stores.forEach((String name, int price) {
       _shopList.add(new Shop.full(name, price));

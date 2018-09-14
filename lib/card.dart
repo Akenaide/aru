@@ -1,7 +1,8 @@
 import "dart:convert";
 
 class ShopCard {
-  ShopCard.full(this.cardId, this.stores, this.bought, this.imageurl, this.amount);
+  ShopCard.full(
+      this.cardId, this.stores, this.bought, this.imageurl, this.amount);
 
   ShopCard.empty(String init) {
     cardId = init;
