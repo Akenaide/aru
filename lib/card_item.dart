@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:aru/card.dart';
 
@@ -118,8 +119,9 @@ class _CardItemState extends State<CardWidget> {
               )
             ],
           ),
-          new Image.network(
-            widget._shopCard.imageurl,
+          new CachedNetworkImage(
+            placeholder: CircularProgressIndicator(),
+            imageUrl: widget._shopCard.imageurl,
           ),
           new Text("Quantity : ${widget._shopCard.amount}"),
           new ShopRow(widget._shopCard),
