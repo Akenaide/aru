@@ -114,13 +114,20 @@ class _MyHomePageState extends State<MyHomePage> {
           child: new ListView(
         children: <Widget>[
           const DrawerHeader(
-            child: const Text("Head"),
+            child: const Text("Aru"),
           ),
           new ListTile(
             leading: new Icon(Icons.file_download),
             title: const Text("Import from wsdeck"),
             onTap: () {
               Navigator.of(context).pushNamed("/import");
+            },
+          ),
+          new ListTile(
+            leading: new Icon(Icons.add),
+            title: const Text("Add single card"),
+            onTap: () {
+              Navigator.of(context).pushNamed("/addelement");
             },
           ),
         ],
@@ -139,13 +146,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         onRefresh: _getInitial,
-      ),
-      floatingActionButton: new FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).pushNamed('/addelement');
-        },
-        tooltip: 'New element',
-        child: new Icon(Icons.add),
       ),
     );
   }
