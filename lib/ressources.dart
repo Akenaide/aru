@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:aru/card.dart';
 import 'package:aru/main.dart' show fsi;
@@ -12,7 +13,7 @@ class Ressource {
     var fs = fsi.document(PATH);
     if (ENABLE_FS) {
       Map<String, dynamic> _newCards = ShopCard.toFirestore(newCards);
-      var future = fs.updateData(_newCards);
+      var future = fs.setData(_newCards);
 
       return future;
     } else {
@@ -36,15 +37,17 @@ class Ressource {
     if (ENABLE_FS) {
       var future = fs.get();
 
-      future.then((data) {
-        for (var f in data['shopcards']) {
-          _cardList.add(new ShopCard.full(
-            f["cardId"],
-            Map.castFrom(f["stores"]),
-            f["imageurl"],
-            f["amount"],
-            f["nbBought"],
-          ));
+      future.then((DocumentSnapshot data) {
+        if (data.exists) {
+          for (var f in data['shopcards']) {
+            _cardList.add(new ShopCard.full(
+              f["cardId"],
+              Map.castFrom(f["stores"]),
+              f["imageurl"],
+              f["amount"],
+              f["nbBought"],
+            ));
+          }
         }
         completer.complete(_cardList);
         return _cardList;

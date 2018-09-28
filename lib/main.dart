@@ -66,6 +66,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<ShopCard> cardList = [];
+  Future<void> _init;
 
   void _deleteCard(String selected) async {
     List<ShopCard> _cardList = [];
@@ -97,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    _getInitial();
+    _init = _getInitial();
   }
 
   @override
@@ -133,17 +134,33 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       )),
       body: new RefreshIndicator(
-        child: new GridView.custom(
-          childrenDelegate: new SliverChildListDelegate(cardList.isEmpty
-              ? [new Text("No data")]
-              : cardList.map((ShopCard card) {
-                  return new CardWidget(
-                      card, _deleteCard, cardList.indexOf(card));
-                }).toList()),
-          gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-            childAspectRatio: 0.45,
-            crossAxisCount: 3,
-          ),
+        child: new FutureBuilder<void>(
+          future: _init,
+          builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+              case ConnectionState.active:
+              case ConnectionState.waiting:
+                return new CircularProgressIndicator();
+              case ConnectionState.done:
+                if (snapshot.hasError) {
+                  return new Text('Error ${snapshot.error}');
+                }
+                return new GridView.custom(
+                  childrenDelegate: new SliverChildListDelegate(cardList.isEmpty
+                      ? [new Text("No data")]
+                      : cardList.map((ShopCard card) {
+                          return new CardWidget(
+                              card, _deleteCard, cardList.indexOf(card));
+                        }).toList()),
+                  gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+                    childAspectRatio: 0.45,
+                    crossAxisCount: 3,
+                  ),
+                );
+            }
+            return null;
+          },
         ),
         onRefresh: _getInitial,
       ),
