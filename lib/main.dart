@@ -83,6 +83,10 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _update() {
+    Ressource.update(cardList);
+  }
+
   Future<void> _getInitial() async {
     Completer _completer = new Completer();
     Ressource.getAll(completer: _completer);
@@ -150,8 +154,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   childrenDelegate: new SliverChildListDelegate(cardList.isEmpty
                       ? [new Text("No data")]
                       : cardList.map((ShopCard card) {
-                          return new CardWidget(
-                              card, _deleteCard, cardList.indexOf(card));
+                          return new CardWidget(card, _deleteCard, _update,
+                              cardList.indexOf(card));
                         }).toList()),
                   gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
                     childAspectRatio: 0.45,

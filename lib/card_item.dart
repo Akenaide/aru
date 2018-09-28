@@ -41,9 +41,10 @@ class _ShopRowState extends State<ShopRow> {
 class CardWidget extends StatefulWidget {
   final ShopCard _shopCard;
   final Function(String) _delete;
+  final Function _update;
   final int index;
 
-  CardWidget(this._shopCard, this._delete, this.index);
+  CardWidget(this._shopCard, this._delete, this._update, this.index);
 
   @override
   _CardItemState createState() => new _CardItemState();
@@ -52,16 +53,19 @@ class CardWidget extends StatefulWidget {
 class _CardItemState extends State<CardWidget> {
   _CardItemState();
 
-  void cacheSelectedCard(ShopCard selected) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("selectedCard", selected.prepToString());
-  }
-
   _navigateAndUpdate(BuildContext context) async {
-    await Navigator.push(context,
+    await Navigator.push(
+        context,
         new MaterialPageRoute<ShopCard>(
             builder: (BuildContext context) =>
                 ManageShopCardWidget("edit", shopCard: widget._shopCard)));
+  }
+
+  void _add() {
+    setState(() {
+      widget._shopCard.nbBought++;
+    });
+    widget._update();
   }
 
   @override
@@ -121,9 +125,12 @@ class _CardItemState extends State<CardWidget> {
               )
             ],
           ),
-          new CachedNetworkImage(
-            placeholder: CircularProgressIndicator(),
-            imageUrl: widget._shopCard.imageurl,
+          new GestureDetector(
+            child: new CachedNetworkImage(
+              placeholder: CircularProgressIndicator(),
+              imageUrl: widget._shopCard.imageurl,
+            ),
+            onDoubleTap: _add,
           ),
           new Text(
               "Bought : ${widget._shopCard.nbBought}/${widget._shopCard.amount}"),
