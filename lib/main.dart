@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:aru/card_item.dart';
 import 'package:aru/card.dart';
@@ -7,7 +9,10 @@ import 'package:aru/manage_card.dart';
 import 'package:aru/import_widget.dart';
 import 'package:aru/ressources.dart';
 
+Firestore fsi = Firestore.instance;
+
 void main() {
+  fsi.enablePersistence(true);
   runApp(new MyApp());
 }
 

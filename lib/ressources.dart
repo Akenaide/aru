@@ -1,16 +1,15 @@
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:aru/card.dart';
+import 'package:aru/main.dart' show fsi;
 
 const String PATH = 'cards/TT2KX6lQljP6sB5WFgDf';
 const bool ENABLE_FS = true;
 
 class Ressource {
-  static final fs = Firestore.instance.document(PATH);
-
   static Future update(List<ShopCard> newCards) async {
+    var fs = fsi.document(PATH);
     if (ENABLE_FS) {
       Map<String, dynamic> _newCards = ShopCard.toFirestore(newCards);
       var future = fs.updateData(_newCards);
@@ -28,6 +27,7 @@ class Ressource {
   }
 
   static Future getAll({Completer completer}) async {
+    var fs = fsi.document(PATH);
     if (completer == null) {
       completer = new Completer();
     }
