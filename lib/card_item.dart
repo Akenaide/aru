@@ -50,11 +50,6 @@ class CardWidget extends StatefulWidget {
 
 class _CardItemState extends State<CardWidget> {
   _CardItemState();
-  toggleBought(bool newValue) {
-    setState(() {
-      widget._shopCard.bought = newValue;
-    });
-  }
 
   void cacheSelectedCard(ShopCard selected) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -123,7 +118,8 @@ class _CardItemState extends State<CardWidget> {
             placeholder: CircularProgressIndicator(),
             imageUrl: widget._shopCard.imageurl,
           ),
-          new Text("Quantity : ${widget._shopCard.amount}"),
+          new Text(
+              "Bought : ${widget._shopCard.nbBought}/${widget._shopCard.amount}"),
           new ShopRow(widget._shopCard),
         ],
       ),

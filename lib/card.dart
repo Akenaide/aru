@@ -2,22 +2,26 @@ import "dart:convert";
 
 class ShopCard {
   ShopCard.full(
-      this.cardId, this.stores, this.bought, this.imageurl, this.amount);
+      this.cardId, this.stores, this.imageurl, this.amount, this.nbBought);
+
+  bool get bought {
+    return this.amount == this.nbBought;
+  }
 
   ShopCard.empty(String init) {
     cardId = init;
-    bought = false;
     stores = new Map();
     imageurl = "";
     amount = 0;
+    nbBought = 0;
   }
 
   ShopCard.fromStringc(data) {
     var _json = json.decode(data);
     cardId = _json["cardId"];
-    bought = _json["bought"];
     imageurl = _json["imageurl"];
     amount = _json["amount"];
+    nbBought = _json["nbBought"];
     stores = new Map();
     _json["stores"].forEach((String key, value) {
       stores.putIfAbsent(key, () => value);
@@ -26,16 +30,16 @@ class ShopCard {
 
   ShopCard.fromCardWS(CardWS card) {
     this.cardId = card.id;
-    this.bought = false;
     this.stores = {"yyt": card.price};
     this.imageurl = card.imageUrl;
     this.amount = card.amount;
+    this.nbBought = 0;
   }
 
   Map<String, dynamic> toJson() {
     return {
       "cardId": this.cardId,
-      "bought": this.bought,
+      "nbBought": this.nbBought,
       "stores": this.stores,
       "imageurl": this.imageurl,
       "amount": this.amount,
@@ -66,7 +70,7 @@ class ShopCard {
 
   String cardId;
   Map<String, int> stores;
-  bool bought;
+  int nbBought;
   String imageurl;
   int amount;
 }

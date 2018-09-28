@@ -39,11 +39,12 @@ class Ressource {
       future.then((data) {
         for (var f in data['shopcards']) {
           _cardList.add(new ShopCard.full(
-              f["cardId"],
-              Map.castFrom(f["stores"]),
-              f["bought"],
-              f["imageurl"],
-              f["amount"]));
+            f["cardId"],
+            Map.castFrom(f["stores"]),
+            f["imageurl"],
+            f["amount"],
+            f["nbBought"],
+          ));
         }
         completer.complete(_cardList);
         return _cardList;

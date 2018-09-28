@@ -30,7 +30,6 @@ class _ManageElement extends State<ManageShopCardWidget> {
   final TextEditingController _cardQuantityCtrl = new TextEditingController();
   List<Shop> shopList = [];
   ShopCard shopCard;
-  bool _checkValue = false;
 
   void _delete(String shop) {
     List<Shop> _shopList = [];
@@ -54,8 +53,8 @@ class _ManageElement extends State<ManageShopCardWidget> {
 
   void _addElement() async {
     List<ShopCard> prevCards = [];
-    ShopCard updatedShop = new ShopCard.empty("");
     List<ShopCard> dbCards;
+    ShopCard updatedShop = shopCard;
 
     await Ressource.getAll().then((data) {
       dbCards = data;
@@ -65,10 +64,9 @@ class _ManageElement extends State<ManageShopCardWidget> {
     this.shopList.forEach((Shop shop) {
       updatedShop.stores[shop.name] = shop.price;
     });
+
     updatedShop.cardId = _cardIdCtrl.text;
-    updatedShop.bought = this.shopCard.bought;
-    updatedShop.imageurl = this.shopCard.imageurl;
-    updatedShop.amount = int.parse(_cardQuantityCtrl.text);
+    updatedShop.nbBought = int.parse(_cardQuantityCtrl.text);
     prevCards = _performAdd(dbCards, updatedShop);
 
     Ressource.update(prevCards);
@@ -101,17 +99,6 @@ class _ManageElement extends State<ManageShopCardWidget> {
             ),
             new Row(
               children: <Widget>[
-                new Text("Bought"),
-                new Checkbox(
-                  value:
-                      _checkValue, // TODO: Dind't found a way to directly init with obj
-                  onChanged: (_val) {
-                    _checkValue = _val;
-                    setState(() {
-                      this.shopCard.bought = _val;
-                    });
-                  },
-                ),
                 new Expanded(
                   child: new TextField(
                     decoration: new InputDecoration(
@@ -123,6 +110,7 @@ class _ManageElement extends State<ManageShopCardWidget> {
                     keyboardType: TextInputType.number,
                   ),
                 ),
+                new Text("/ ${shopCard.amount}"),
                 new IconButton(
                   onPressed: _add,
                   icon: const Icon(Icons.add),
@@ -168,8 +156,7 @@ class _EditElement extends _ManageElement {
 
     _shopCard = new ShopCard.fromStringc(selectedString);
     _cardIdCtrl.text = _shopCard.cardId;
-    _cardQuantityCtrl.text = _shopCard.amount.toString();
-    _checkValue = _shopCard.bought;
+    _cardQuantityCtrl.text = _shopCard.nbBought.toString();
     _shopCard.stores.forEach((String name, int price) {
       _shopList.add(new Shop.full(name, price));
     });
