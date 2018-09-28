@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:aru/card.dart';
+import 'package:aru/manage_card.dart';
 
 class ShopRow extends StatefulWidget {
   final ShopCard _shopCard;
@@ -56,6 +57,13 @@ class _CardItemState extends State<CardWidget> {
     prefs.setString("selectedCard", selected.prepToString());
   }
 
+  _navigateAndUpdate(BuildContext context) async {
+    await Navigator.push(context,
+        new MaterialPageRoute<ShopCard>(
+            builder: (BuildContext context) =>
+                ManageShopCardWidget("edit", shopCard: widget._shopCard)));
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Card(
@@ -73,8 +81,7 @@ class _CardItemState extends State<CardWidget> {
                 onSelected: (String action) {
                   switch (action) {
                     case "edit":
-                      Navigator.of(context).pushNamed('/editelement');
-                      cacheSelectedCard(widget._shopCard);
+                      _navigateAndUpdate(context);
                       break;
 
                     case "delete":

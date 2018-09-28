@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:aru/card.dart';
 import 'package:aru/new_shop_widget.dart';
@@ -7,13 +6,15 @@ import 'package:aru/ressources.dart';
 
 class ManageShopCardWidget extends StatefulWidget {
   final String action;
-  ManageShopCardWidget(this.action);
+  final ShopCard shopCard;
+
+  ManageShopCardWidget(this.action, {this.shopCard});
 
   @override
   State createState() {
     switch (this.action) {
       case "edit":
-        return new _EditElement("Edit");
+        return new _EditElement("Edit", shopCard: this.shopCard);
         break;
       case "add":
         return new _AddElement("Add");
@@ -70,7 +71,7 @@ class _ManageElement extends State<ManageShopCardWidget> {
     prevCards = _performAdd(dbCards, updatedShop);
 
     Ressource.update(prevCards);
-    Navigator.of(context).pushReplacementNamed("/");
+    Navigator.of(context).pop();
   }
 
   @override
@@ -144,28 +145,10 @@ class _ManageElement extends State<ManageShopCardWidget> {
     );
   }
 
-  _ManageElement(this.title);
+  _ManageElement(this.title, {this.shopCard});
 }
 
 class _EditElement extends _ManageElement {
-  void _getSelected() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String selectedString = prefs.getString("selectedCard");
-    List<Shop> _shopList = [];
-    ShopCard _shopCard;
-
-    _shopCard = new ShopCard.fromStringc(selectedString);
-    _cardIdCtrl.text = _shopCard.cardId;
-    _cardQuantityCtrl.text = _shopCard.nbBought.toString();
-    _shopCard.stores.forEach((String name, int price) {
-      _shopList.add(new Shop.full(name, price));
-    });
-    setState(() {
-      shopCard = _shopCard;
-      shopList = _shopList;
-    });
-  }
-
   @override
   List<ShopCard> _performAdd(dbCards, [ShopCard updatedShop]) {
     return ShopCard.replaceIn(updatedShop, this.shopCard, dbCards);
@@ -173,11 +156,15 @@ class _EditElement extends _ManageElement {
 
   @override
   void initState() {
+    _cardIdCtrl.text = shopCard.cardId;
+    _cardQuantityCtrl.text = shopCard.nbBought.toString();
+    shopCard.stores.forEach((String name, int price) {
+      shopList.add(new Shop.full(name, price));
+    });
     super.initState();
-    _getSelected();
   }
 
-  _EditElement(title) : super(title);
+  _EditElement(title, {shopCard}) : super(title, shopCard: shopCard);
 }
 
 class _AddElement extends _ManageElement {
