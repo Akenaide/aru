@@ -23,17 +23,24 @@ class Ressource {
     return fsPath;
   }
 
-  set path(String newPath){
+  set path(String newPath) {
     fsPath = newPath;
   }
 
   Future update(List<ShopCard> newCards) async {
-    var fs = fsi.document(this.fsPath);
+    var fs = fsi.collection(this.fsPath);
     if (ENABLE_FS) {
-      Map<String, dynamic> _newCards = ShopCard.toFirestore(newCards);
-      var future = fs.setData(_newCards);
+      List<Map<String, dynamic>> _newCards = ShopCard.toFirestore(newCards);
+      for (var card in _newCards) {
+        fs.add(card);
+      }
+      // fs.where("cardId", isEqualTo: key).getDocuments().then((QuerySnapshot data){
+      //   data.documents.
+      // });
 
-      return future;
+      // var future = fs.setData(_newCards);
+
+      // return future;
     } else {
       List<String> prevCards = [];
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -46,26 +53,28 @@ class Ressource {
   }
 
   Future getAll({Completer completer}) async {
-    var fs = fsi.document(this.fsPath);
     if (completer == null) {
       completer = new Completer();
     }
     List<ShopCard> _cardList = [];
 
     if (ENABLE_FS) {
-      var future = fs.get();
+      if (this.path == '') {
+        completer.complete(_cardList);
+        return _cardList;
+      }
+      var fs = fsi.collection(this.fsPath);
+      var future = fs.getDocuments();
 
-      future.then((DocumentSnapshot data) {
-        if (data.exists) {
-          for (var f in data['shopcards']) {
-            _cardList.add(new ShopCard.full(
-              f["cardId"],
-              Map.castFrom(f["stores"]),
-              f["imageurl"],
-              f["amount"],
-              f["nbBought"],
-            ));
-          }
+      future.then((QuerySnapshot data) {
+        for (var f in data.documents) {
+          _cardList.add(new ShopCard.full(
+            f["cardId"],
+            Map.castFrom(f["stores"]),
+            f["imageurl"],
+            f["amount"],
+            f["nbBought"],
+          ));
         }
         completer.complete(_cardList);
         return _cardList;

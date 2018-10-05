@@ -37,16 +37,16 @@ class _ImportState extends State<ImportWidget> {
   }
 
   void _import() async {
-    List<ShopCard> dbCards;
+    List<ShopCard> dbCards = [];
     Ressource ressource = Ressource();
 
-    await ressource.getAll().then((data) {
-      dbCards = data;
-    });
+    // await ressource.getAll().then((data) {
+    //   dbCards = data;
+    // });
 
     for (var card in this.cards) {
       if (card.selected) {
-        dbCards.insert(0, new ShopCard.fromCardWS(card));
+        dbCards..add(new ShopCard.fromCardWS(card));
       }
     }
     ressource.update(dbCards);

@@ -50,12 +50,10 @@ class ShopCard {
     return json.encode(this.toJson()).toString();
   }
 
-  static Map<String, dynamic> toFirestore(List<ShopCard> cards) {
-    return {
-      "shopcards": cards.map((f) {
-        return f.toJson();
-      }).toList()
-    };
+  static List<Map<String, dynamic>> toFirestore(List<ShopCard> cards) {
+    return cards.map((f) {
+      return f.toJson();
+    }).toList();
   }
 
   static List<ShopCard> replaceIn(

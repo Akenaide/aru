@@ -109,6 +109,49 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> drawerChildren = [
+      const DrawerHeader(
+        child: const Text("Aru"),
+      ),
+      new ListTile(
+        leading: new Icon(Icons.file_download),
+        title: const Text("Import from wsdeck"),
+        onTap: () {
+          Navigator.of(context).pushNamed("/import");
+        },
+      ),
+      new ListTile(
+        leading: new Icon(Icons.add),
+        title: const Text("Add single card"),
+        onTap: () {
+          Navigator.of(context).pushNamed("/addelement");
+        },
+      ),
+      new Divider(),
+      new TextField(
+        controller: _username,
+      ),
+      new ListTile(
+        leading: new Icon(Icons.exit_to_app),
+        title: const Text("Login"),
+        onTap: () {
+          if (_username.text != '') {
+            _ressource.path = "users/${_username.text}/cards";
+            _getInitial();
+            Navigator.of(context).pop();
+          }
+        },
+      ),
+      new ListTile(
+        leading: new Icon(Icons.power_settings_new),
+        title: const Text("Logout"),
+        onTap: () {
+          _ressource.path = '';
+          _getInitial();
+          Navigator.of(context).pop();
+        },
+      ),
+    ];
     return new Scaffold(
       appBar: new AppBar(
         // Here we take the value from the MyHomePage object that
@@ -119,25 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       drawer: new Drawer(
         child: new ListView(
-          children: <Widget>[
-            const DrawerHeader(
-              child: const Text("Aru"),
-            ),
-            new ListTile(
-              leading: new Icon(Icons.file_download),
-              title: const Text("Import from wsdeck"),
-              onTap: () {
-                Navigator.of(context).pushNamed("/import");
-              },
-            ),
-            new ListTile(
-              leading: new Icon(Icons.add),
-              title: const Text("Add single card"),
-              onTap: () {
-                Navigator.of(context).pushNamed("/addelement");
-              },
-            ),
-          ],
+          children: drawerChildren,
         ),
       ),
       body: new RefreshIndicator(
