@@ -1,8 +1,8 @@
 import "dart:convert";
 
 class ShopCard {
-  ShopCard.full(
-      this.cardId, this.stores, this.imageurl, this.amount, this.nbBought);
+  ShopCard.full(this.cardId, this.stores, this.imageurl, this.amount,
+      this.nbBought, this.id);
 
   bool get bought {
     return this.amount == this.nbBought;
@@ -71,6 +71,7 @@ class ShopCard {
   int nbBought;
   String imageurl;
   int amount;
+  String id;
 }
 
 class Shop {

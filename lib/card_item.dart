@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:aru/card.dart';
 import 'package:aru/manage_card.dart';
+import 'package:aru/ressources.dart';
 
 class ShopRow extends StatefulWidget {
   final ShopCard _shopCard;
@@ -41,10 +42,9 @@ class _ShopRowState extends State<ShopRow> {
 class CardWidget extends StatefulWidget {
   final ShopCard _shopCard;
   final Function(String) _delete;
-  final Function _update;
   final int index;
 
-  CardWidget(this._shopCard, this._delete, this._update, this.index);
+  CardWidget(this._shopCard, this._delete, this.index);
 
   @override
   _CardItemState createState() => new _CardItemState();
@@ -62,10 +62,11 @@ class _CardItemState extends State<CardWidget> {
   }
 
   void _add() {
+    Ressource ressource = Ressource();
     setState(() {
       widget._shopCard.nbBought++;
     });
-    widget._update();
+    ressource.update(widget._shopCard);
   }
 
   @override
@@ -92,7 +93,7 @@ class _CardItemState extends State<CardWidget> {
                       break;
 
                     case "delete":
-                      widget._delete(widget._shopCard.cardId);
+                      widget._delete(widget._shopCard.id);
                       break;
                     default:
                   }

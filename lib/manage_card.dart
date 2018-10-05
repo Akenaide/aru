@@ -71,7 +71,7 @@ class _ManageElement extends State<ManageShopCardWidget> {
     updatedShop.nbBought = int.parse(_cardQuantityCtrl.text);
     prevCards = _performAdd(dbCards, updatedShop);
 
-    ressource.update(prevCards);
+    // ressource.add([updatedShop]);
     Navigator.of(context).pop();
   }
 
@@ -152,7 +152,9 @@ class _ManageElement extends State<ManageShopCardWidget> {
 class _EditElement extends _ManageElement {
   @override
   List<ShopCard> _performAdd(dbCards, [ShopCard updatedShop]) {
-    return ShopCard.replaceIn(updatedShop, this.shopCard, dbCards);
+    Ressource ressource = Ressource();
+    ressource.update(updatedShop);
+    return [updatedShop];
   }
 
   @override

@@ -71,22 +71,12 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController _username = new TextEditingController();
 
   void _deleteCard(String selected) async {
-    List<ShopCard> _cardList = [];
-
-    await _ressource.getAll().then((data) {
-      _cardList = data;
-    });
-
-    _cardList.removeWhere((ShopCard card) => card.cardId == selected);
-
-    _ressource.update(_cardList);
+    _ressource.delete(selected);
     setState(() {
-      cardList = _cardList;
+      cardList.removeWhere((ShopCard card) {
+        return card.id == selected;
+      });
     });
-  }
-
-  void _update() {
-    _ressource.update(cardList);
   }
 
   Future<void> _getInitial() async {
@@ -182,8 +172,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   childrenDelegate: new SliverChildListDelegate(cardList.isEmpty
                       ? [new Text("No data")]
                       : cardList.map((ShopCard card) {
-                          return new CardWidget(card, _deleteCard, _update,
-                              cardList.indexOf(card));
+                          return new CardWidget(
+                              card, _deleteCard, cardList.indexOf(card));
                         }).toList()),
                   gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
                     childAspectRatio: 0.45,

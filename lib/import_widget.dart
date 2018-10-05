@@ -46,10 +46,10 @@ class _ImportState extends State<ImportWidget> {
 
     for (var card in this.cards) {
       if (card.selected) {
-        dbCards..add(new ShopCard.fromCardWS(card));
+        dbCards.add(new ShopCard.fromCardWS(card));
       }
     }
-    ressource.update(dbCards);
+    ressource.add(dbCards);
     Navigator.of(context).pushReplacementNamed("/");
   }
 
