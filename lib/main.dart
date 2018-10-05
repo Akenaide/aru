@@ -67,29 +67,31 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<ShopCard> cardList = [];
   Future<void> _init;
+  Ressource _ressource = Ressource();
+  TextEditingController _username = new TextEditingController();
 
   void _deleteCard(String selected) async {
     List<ShopCard> _cardList = [];
 
-    await Ressource.getAll().then((data) {
+    await _ressource.getAll().then((data) {
       _cardList = data;
     });
 
     _cardList.removeWhere((ShopCard card) => card.cardId == selected);
 
-    Ressource.update(_cardList);
+    _ressource.update(_cardList);
     setState(() {
       cardList = _cardList;
     });
   }
 
   void _update() {
-    Ressource.update(cardList);
+    _ressource.update(cardList);
   }
 
   Future<void> _getInitial() async {
     Completer _completer = new Completer();
-    Ressource.getAll(completer: _completer);
+    _ressource.getAll(completer: _completer);
 
     _completer.future.then((data) {
       setState(() {

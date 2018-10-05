@@ -5,12 +5,30 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:aru/card.dart';
 import 'package:aru/main.dart' show fsi;
 
-const String PATH = 'cards/TT2KX6lQljP6sB5WFgDf';
+// const String PATH = 'cards/TT2KX6lQljP6sB5WFgDf';
+const String PATH = 'cards/TT2KX6lQljP6sB5WFgDg';
 const bool ENABLE_FS = true;
 
 class Ressource {
-  static Future update(List<ShopCard> newCards) async {
-    var fs = fsi.document(PATH);
+  String fsPath = PATH;
+  static final Ressource _ressource = new Ressource._internal();
+
+  Ressource._internal();
+
+  factory Ressource() {
+    return _ressource;
+  }
+
+  String get path {
+    return fsPath;
+  }
+
+  set path(String newPath){
+    fsPath = newPath;
+  }
+
+  Future update(List<ShopCard> newCards) async {
+    var fs = fsi.document(this.fsPath);
     if (ENABLE_FS) {
       Map<String, dynamic> _newCards = ShopCard.toFirestore(newCards);
       var future = fs.setData(_newCards);
@@ -27,8 +45,8 @@ class Ressource {
     }
   }
 
-  static Future getAll({Completer completer}) async {
-    var fs = fsi.document(PATH);
+  Future getAll({Completer completer}) async {
+    var fs = fsi.document(this.fsPath);
     if (completer == null) {
       completer = new Completer();
     }

@@ -38,8 +38,9 @@ class _ImportState extends State<ImportWidget> {
 
   void _import() async {
     List<ShopCard> dbCards;
+    Ressource ressource = Ressource();
 
-    await Ressource.getAll().then((data) {
+    await ressource.getAll().then((data) {
       dbCards = data;
     });
 
@@ -48,7 +49,7 @@ class _ImportState extends State<ImportWidget> {
         dbCards.insert(0, new ShopCard.fromCardWS(card));
       }
     }
-    Ressource.update(dbCards);
+    ressource.update(dbCards);
     Navigator.of(context).pushReplacementNamed("/");
   }
 

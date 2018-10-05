@@ -56,8 +56,9 @@ class _ManageElement extends State<ManageShopCardWidget> {
     List<ShopCard> prevCards = [];
     List<ShopCard> dbCards;
     ShopCard updatedShop = shopCard;
+    Ressource ressource = Ressource();
 
-    await Ressource.getAll().then((data) {
+    await ressource.getAll().then((data) {
       dbCards = data;
     });
 
@@ -70,7 +71,7 @@ class _ManageElement extends State<ManageShopCardWidget> {
     updatedShop.nbBought = int.parse(_cardQuantityCtrl.text);
     prevCards = _performAdd(dbCards, updatedShop);
 
-    Ressource.update(prevCards);
+    ressource.update(prevCards);
     Navigator.of(context).pop();
   }
 
