@@ -77,9 +77,12 @@ class _CardItemState extends State<CardWidget> {
           new Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              new Text(
-                widget._shopCard.cardId,
-                style: new TextStyle(fontSize: 12.0),
+              new Expanded(
+                child: new Text(
+                  widget._shopCard.cardId,
+                  style: new TextStyle(
+                      fontSize: 14.0, fontWeight: FontWeight.bold),
+                ),
               ),
               new PopupMenuButton(
                 onSelected: (String action) {
@@ -134,7 +137,9 @@ class _CardItemState extends State<CardWidget> {
           ),
           new Text(
               "Bought : ${widget._shopCard.nbBought}/${widget._shopCard.amount}"),
-          new ShopRow(widget._shopCard),
+          new Expanded(
+            child: new ShopRow(widget._shopCard),
+          ),
         ],
       ),
     );

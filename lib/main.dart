@@ -116,27 +116,28 @@ class _MyHomePageState extends State<MyHomePage> {
         title: new Text(widget.title),
       ),
       drawer: new Drawer(
-          child: new ListView(
-        children: <Widget>[
-          const DrawerHeader(
-            child: const Text("Aru"),
-          ),
-          new ListTile(
-            leading: new Icon(Icons.file_download),
-            title: const Text("Import from wsdeck"),
-            onTap: () {
-              Navigator.of(context).pushNamed("/import");
-            },
-          ),
-          new ListTile(
-            leading: new Icon(Icons.add),
-            title: const Text("Add single card"),
-            onTap: () {
-              Navigator.of(context).pushNamed("/addelement");
-            },
-          ),
-        ],
-      )),
+        child: new ListView(
+          children: <Widget>[
+            const DrawerHeader(
+              child: const Text("Aru"),
+            ),
+            new ListTile(
+              leading: new Icon(Icons.file_download),
+              title: const Text("Import from wsdeck"),
+              onTap: () {
+                Navigator.of(context).pushNamed("/import");
+              },
+            ),
+            new ListTile(
+              leading: new Icon(Icons.add),
+              title: const Text("Add single card"),
+              onTap: () {
+                Navigator.of(context).pushNamed("/addelement");
+              },
+            ),
+          ],
+        ),
+      ),
       body: new RefreshIndicator(
         child: new FutureBuilder<void>(
           future: _init,
