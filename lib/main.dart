@@ -97,13 +97,35 @@ class _MyHomePageState extends State<MyHomePage> {
     return _completer.future;
   }
 
+  _updatePrice() async {
+    var dialog = showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return new Dialog(
+          child: new Row(
+            children: <Widget>[
+              new CircularProgressIndicator(),
+              const Text("Update yyt prices"),
+            ],
+          ),
+        );
+      },
+    );
+    await _ressource.updatePrice(cardList);
+    setState(() {
+      cardList = cardList;
+    });
+    Navigator.pop(context);
+  }
+
   Future<void> _getInitial() async {
     Completer _completer = new Completer();
     _getSetLogin().then((_) {
       _ressource.getAll(completer: _completer);
     });
 
-    _completer.future.then((data) {
+    _completer.future.then((data) async {
       setState(() {
         cardList = data;
       });
@@ -154,6 +176,14 @@ class _MyHomePageState extends State<MyHomePage> {
         title: const Text("Add single card"),
         onTap: () {
           Navigator.of(context).pushNamed("/addelement");
+        },
+      ),
+      new ListTile(
+        leading: new Icon(Icons.refresh),
+        title: const Text("Update yyt prices"),
+        onTap: () {
+          Navigator.of(context).pop();
+          _updatePrice();
         },
       ),
       new Divider(),

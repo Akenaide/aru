@@ -1,11 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:aru/card.dart';
 import 'package:aru/main.dart' show fsi;
 
 const bool ENABLE_FS = true;
+const String ProxySingleUrl = "https://proxymaker.naide.moe/views/searchcards";
 
 class Ressource {
   String fsPath = '';
@@ -48,6 +51,23 @@ class Ressource {
         return card.prepToString();
       }).toList();
       prefs.setStringList("cards", prevCards);
+    }
+  }
+
+  Future updatePrice(List<ShopCard> cards) async {
+    var fs = fsi.collection(this.fsPath);
+    http.Client client = new http.Client();
+
+    for (ShopCard card in cards) {
+      http.Response response =
+          await client.get(ProxySingleUrl + "?id=${card.cardId}");
+      if (response.statusCode != 200) {
+        print(response.body);
+        continue;
+      }
+      var data = json.decode(response.body);
+      card.stores["yyt"] = data["Price"];
+      fs.document(card.id).updateData(card.toJson());
     }
   }
 
