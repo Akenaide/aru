@@ -37,19 +37,15 @@ class _ImportState extends State<ImportWidget> {
   }
 
   void _import() async {
-    List<ShopCard> dbCards = [];
+    List<ShopCard> newCards = [];
     Ressource ressource = Ressource();
-
-    // await ressource.getAll().then((data) {
-    //   dbCards = data;
-    // });
 
     for (var card in this.cards) {
       if (card.selected) {
-        dbCards.add(new ShopCard.fromCardWS(card));
+        newCards.add(new ShopCard.fromCardWS(card));
       }
     }
-    ressource.add(dbCards);
+    ressource.add(newCards);
     Navigator.of(context).pushReplacementNamed("/");
   }
 
@@ -68,12 +64,22 @@ class _ImportState extends State<ImportWidget> {
       body: new ListView(
         padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
         children: <Widget>[
+          const Text(
+            "Enter wsdeck id :",
+            style: TextStyle(fontSize: 20.0),
+          ),
           new Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              const Text(
-                "Shop name",
-                style: const TextStyle(fontWeight: FontWeight.bold),
+              new Expanded(
+                child: new TextField(
+                  autofocus: true,
+                  controller: this._controller,
+                  keyboardType: TextInputType.number,
+                  onSubmitted: (_val) {
+                    _fetch();
+                  },
+                ),
               ),
               new IconButton(
                 color: Colors.red,
@@ -82,14 +88,6 @@ class _ImportState extends State<ImportWidget> {
                 onPressed: _fetch,
               )
             ],
-          ),
-          new TextField(
-            autofocus: true,
-            controller: this._controller,
-            keyboardType: TextInputType.number,
-            onSubmitted: (_val) {
-              _fetch();
-            },
           ),
           new Column(
             children: this.cards.isEmpty
