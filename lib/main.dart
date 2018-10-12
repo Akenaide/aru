@@ -136,8 +136,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> drawerChildren = [
-      const DrawerHeader(
-        child: const Text("Aru"),
+      new Container(
+        height: 80.0,
+        child: const DrawerHeader(
+          child: const Text("Aru"),
+        ),
       ),
       new ListTile(
         leading: new Icon(Icons.file_download),

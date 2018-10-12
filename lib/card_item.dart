@@ -82,7 +82,7 @@ class _CardItemState extends State<CardWidget> {
                 child: new Text(
                   widget._shopCard.cardId,
                   style: new TextStyle(
-                      fontSize: 14.0, fontWeight: FontWeight.bold),
+                      fontSize: 13.0, fontWeight: FontWeight.bold),
                 ),
               ),
               new PopupMenuButton(
