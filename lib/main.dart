@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:aru/card_item.dart';
 import 'package:aru/card.dart';
@@ -9,6 +10,7 @@ import 'package:aru/manage_card.dart';
 import 'package:aru/import_widget.dart';
 import 'package:aru/ressources.dart';
 
+const AruLoginKey = "AruLogin";
 Firestore fsi = Firestore.instance;
 
 void main() {
@@ -79,9 +81,27 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  Future _getSetLogin() async {
+    Completer _completer = new Completer();
+    var pref = await SharedPreferences.getInstance();
+    if (_username.text.isEmpty) {
+      String username = pref.get(AruLoginKey);
+      if (username.isNotEmpty) {
+        _ressource.username = username;
+        _username.text = username;
+      }
+    } else {
+      pref.setString(AruLoginKey, _username.text);
+    }
+    _completer.complete("");
+    return _completer.future;
+  }
+
   Future<void> _getInitial() async {
     Completer _completer = new Completer();
-    _ressource.getAll(completer: _completer);
+    _getSetLogin().then((_) {
+      _ressource.getAll(completer: _completer);
+    });
 
     _completer.future.then((data) {
       setState(() {
@@ -91,10 +111,26 @@ class _MyHomePageState extends State<MyHomePage> {
     return _completer.future;
   }
 
+  _logout() async {
+    _username.clear();
+    _ressource.username = '';
+    var pref = await SharedPreferences.getInstance();
+    pref.setString(AruLoginKey, '');
+    setState(() {
+      cardList.clear();
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     _init = _getInitial();
+  }
+
+  @override
+  void dispose() {
+    _username.dispose();
+    super.dispose();
   }
 
   @override
@@ -126,7 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: const Text("Login"),
         onTap: () {
           if (_username.text != '') {
-            _ressource.path = "users/${_username.text}/cards";
+            _ressource.username = _username.text;
             _getInitial();
             Navigator.of(context).pop();
           }
@@ -136,8 +172,7 @@ class _MyHomePageState extends State<MyHomePage> {
         leading: new Icon(Icons.power_settings_new),
         title: const Text("Logout"),
         onTap: () {
-          _ressource.path = '';
-          _getInitial();
+          _logout();
           Navigator.of(context).pop();
         },
       ),

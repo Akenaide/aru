@@ -9,6 +9,7 @@ const bool ENABLE_FS = true;
 
 class Ressource {
   String fsPath = '';
+  bool _isLogged = false;
   static final Ressource _ressource = new Ressource._internal();
 
   Ressource._internal();
@@ -17,12 +18,9 @@ class Ressource {
     return _ressource;
   }
 
-  String get path {
-    return fsPath;
-  }
-
-  set path(String newPath) {
-    fsPath = newPath;
+  set username(String newLogin) {
+    fsPath = "users/$newLogin/cards";
+    _isLogged = newLogin.isNotEmpty;
   }
 
   Future delete(String id) async {
@@ -60,7 +58,7 @@ class Ressource {
     List<ShopCard> _cardList = [];
 
     if (ENABLE_FS) {
-      if (this.path == '') {
+      if (!_isLogged) {
         completer.complete(_cardList);
         return _cardList;
       }
