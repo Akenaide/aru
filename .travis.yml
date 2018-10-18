@@ -30,8 +30,8 @@ before_script:
   - unzip -qq gradle-3.5-bin.zip
   - export GRADLE_HOME=$PWD/gradle-3.5
   - export PATH=$GRADLE_HOME/bin:$PATH
-  - git clone https://github.com/flutter/flutter.git -b master --depth 1
-  - ./flutter/bin/flutter channel dev
+  - git clone https://github.com/flutter/flutter.git -b master
+  - ./flutter/bin/flutter channel master
   - ./flutter/bin/flutter doctor -v
   - ./flutter/bin/flutter upgrade
 script:
