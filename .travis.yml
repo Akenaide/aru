@@ -31,7 +31,7 @@ before_script:
   - export GRADLE_HOME=$PWD/gradle-3.5
   - export PATH=$GRADLE_HOME/bin:$PATH
   - git clone https://github.com/flutter/flutter.git -b master --depth 1
-  - ./flutter/bin/flutter channel master
+  - ./flutter/bin/flutter channel dev
   - ./flutter/bin/flutter doctor -v
   - ./flutter/bin/flutter upgrade
 script:
