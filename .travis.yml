@@ -32,7 +32,8 @@ before_script:
   - export PATH=$GRADLE_HOME/bin:$PATH
   - git clone https://github.com/flutter/flutter.git -b master --depth 1
   - ./flutter/bin/flutter channel master
-  - ./flutter/bin/flutter doctor 
+  - ./flutter/bin/flutter doctor -v
+  - ./flutter/bin/flutter packages get
 script:
   - ./flutter/bin/flutter -v build apk
 
