@@ -86,6 +86,8 @@ class _CardItemState extends State<CardWidget> {
                 ),
               ),
               new PopupMenuButton(
+                padding: const EdgeInsets.only(),
+                icon: Icon(Icons.keyboard_arrow_down),
                 onSelected: (String action) {
                   switch (action) {
                     case "edit":
