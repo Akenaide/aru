@@ -98,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _updatePrice() async {
-    var dialog = showDialog(
+    showDialog(
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {

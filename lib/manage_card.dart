@@ -30,6 +30,7 @@ class _ManageElement extends State<ManageShopCardWidget> {
   final TextEditingController _cardIdCtrl = new TextEditingController();
   final TextEditingController _cardQuantityCtrl = new TextEditingController();
   final TextEditingController _neededAmountCtrl = new TextEditingController();
+  Ressource _ressource = Ressource();
   List<Shop> shopList = [];
   ShopCard shopCard;
 
@@ -41,17 +42,15 @@ class _ManageElement extends State<ManageShopCardWidget> {
     });
   }
 
-  List<ShopCard> _performAdd(List<ShopCard> dbCards, [ShopCard updatedShop]) {
+  _performAdd(List<ShopCard> dbCards, [ShopCard updatedShop]) {
     throw new UnimplementedError();
   }
 
   void _addElement() async {
-    List<ShopCard> prevCards = [];
     List<ShopCard> dbCards;
     ShopCard updatedShop = shopCard;
-    Ressource ressource = Ressource();
 
-    await ressource.getAll().then((data) {
+    await _ressource.getAll().then((data) {
       dbCards = data;
     });
 
@@ -63,9 +62,8 @@ class _ManageElement extends State<ManageShopCardWidget> {
     updatedShop.cardId = _cardIdCtrl.text;
     updatedShop.nbBought = int.parse(_cardQuantityCtrl.text);
     updatedShop.amount = int.parse(_neededAmountCtrl.text);
-    prevCards = _performAdd(dbCards, updatedShop);
+    _performAdd(dbCards, updatedShop);
 
-    // ressource.add([updatedShop]);
     Navigator.of(context).pop();
   }
 
@@ -147,10 +145,8 @@ class _ManageElement extends State<ManageShopCardWidget> {
 
 class _EditElement extends _ManageElement {
   @override
-  List<ShopCard> _performAdd(dbCards, [ShopCard updatedShop]) {
-    Ressource ressource = Ressource();
-    ressource.update(updatedShop);
-    return [updatedShop];
+  _performAdd(dbCards, [ShopCard updatedShop]) {
+    _ressource.update(updatedShop);
   }
 
   @override
@@ -169,9 +165,8 @@ class _EditElement extends _ManageElement {
 
 class _AddElement extends _ManageElement {
   @override
-  List<ShopCard> _performAdd(dbCards, [ShopCard updatedShop]) {
+  _performAdd(dbCards, [ShopCard updatedShop]) {
     dbCards.add(updatedShop);
-    return dbCards;
   }
 
   @override
