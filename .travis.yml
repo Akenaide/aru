@@ -5,7 +5,5 @@ cache:
   - "$HOME/.pub-cache"
 before_install:
 - openssl aes-256-cbc -K $encrypted_3ddfe88e8a62_key -iv $encrypted_3ddfe88e8a62_iv
-  -in android.tar.enc -out android.tar -d
-- openssl aes-256-cbc -K $encrypted_3ddfe88e8a62_key -iv $encrypted_3ddfe88e8a62_iv
   -in android/android.tar.enc -out android/android.tar -d
 - tar xwf android/android.tar -C android/
