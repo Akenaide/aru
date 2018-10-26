@@ -71,6 +71,13 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _init;
   Ressource _ressource = Ressource();
   TextEditingController _username = new TextEditingController();
+  int get _total {
+    int sum = 0;
+    for (var card in cardList) {
+      sum = sum + (card.stores["yyt"] * (card.amount - card.nbBought));
+    }
+    return sum;
+  }
 
   void _deleteCard(String selected) async {
     _ressource.delete(selected);
@@ -216,6 +223,7 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       ),
     ];
+
     return new Scaffold(
       appBar: new AppBar(
         // Here we take the value from the MyHomePage object that
@@ -242,17 +250,26 @@ class _MyHomePageState extends State<MyHomePage> {
                 if (snapshot.hasError) {
                   return new Text('Error ${snapshot.error}');
                 }
-                return new GridView.custom(
-                  childrenDelegate: new SliverChildListDelegate(cardList.isEmpty
-                      ? [new Text("No data")]
-                      : cardList.map((ShopCard card) {
-                          return new CardWidget(
-                              card, _deleteCard, cardList.indexOf(card));
-                        }).toList()),
-                  gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 0.45,
-                    crossAxisCount: 3,
-                  ),
+                return new Column(
+                  children: <Widget>[
+                    new Card(child: new Text("Total : $_total")),
+                    new Expanded(
+                      child: GridView.custom(
+                        childrenDelegate:
+                            new SliverChildListDelegate(cardList.isEmpty
+                                ? [new Text("No data")]
+                                : cardList.map((ShopCard card) {
+                                    return new CardWidget(card, _deleteCard,
+                                        cardList.indexOf(card));
+                                  }).toList()),
+                        gridDelegate:
+                            new SliverGridDelegateWithFixedCrossAxisCount(
+                          childAspectRatio: 0.45,
+                          crossAxisCount: 3,
+                        ),
+                      ),
+                    ),
+                  ],
                 );
             }
             return null;
