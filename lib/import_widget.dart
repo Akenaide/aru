@@ -36,6 +36,14 @@ class _ImportState extends State<ImportWidget> {
     });
   }
 
+  void _selectAll() {
+    setState(() {
+      for (var card in cards) {
+        card.selected = true;
+      }
+    });
+  }
+
   void _import() async {
     List<ShopCard> newCards = [];
     Ressource ressource = Ressource();
@@ -51,15 +59,24 @@ class _ImportState extends State<ImportWidget> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> actions = <Widget>[
+      new IconButton(
+        icon: new Icon(Icons.save),
+        onPressed: _import,
+      ),
+    ];
+
+    if (this.cards.isNotEmpty) {
+      actions.add(new IconButton(
+        icon: new Icon(Icons.select_all),
+        onPressed: _selectAll,
+      ));
+    }
+
     return new Scaffold(
       appBar: AppBar(
         title: const Text("Import from wsdeck"),
-        actions: <Widget>[
-          new IconButton(
-            icon: new Icon(Icons.save),
-            onPressed: _import,
-          )
-        ],
+        actions: actions,
       ),
       body: new ListView(
         padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
