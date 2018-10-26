@@ -81,10 +81,9 @@ class _ImportState extends State<ImportWidget> {
                   },
                 ),
               ),
-              new IconButton(
-                color: Colors.red,
-                icon: const Icon(Icons.file_download),
-                tooltip: 'Delete shop',
+              new RaisedButton(
+                // color: Colors.blueGrey,
+                child: const Text("Fetch"),
                 onPressed: _fetch,
               )
             ],
