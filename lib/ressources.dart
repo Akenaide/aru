@@ -54,18 +54,29 @@ class Ressource {
     }
   }
 
-  Future updatePrice(List<ShopCard> cards) async {
-    var fs = fsi.collection(this.fsPath);
+  dynamic fetchCardInfo(String cardId) async {
+    Map<String, dynamic> data;
     http.Client client = new http.Client();
-
-    for (ShopCard card in cards) {
       http.Response response =
-          await client.get(ProxySingleUrl + "?id=${card.cardId}");
+          await client.get(ProxySingleUrl + "?id=$cardId");
       if (response.statusCode != 200) {
         print(response.body);
+        throw http.ClientException;
+      }
+       data = json.decode(response.body);
+      return data;
+  }
+
+  Future updatePrice(List<ShopCard> cards) async {
+    var fs = fsi.collection(this.fsPath);
+
+    for (ShopCard card in cards) {
+      var data;
+      try {
+        data = await fetchCardInfo(card.cardId);
+      } catch (ClienException) {
         continue;
       }
-      var data = json.decode(response.body);
       card.stores["yyt"] = data["Price"];
       fs.document(card.id).updateData(card.toJson());
     }
