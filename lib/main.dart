@@ -174,8 +174,14 @@ class _MyHomePageState extends State<MyHomePage> {
       new ListTile(
         leading: new Icon(Icons.add),
         title: const Text("Add single card"),
-        onTap: () {
-          Navigator.of(context).pushNamed("/addelement");
+        onTap: () async {
+          var result = await Navigator.of(context).pushNamed("/addelement");
+          if (result != null) {
+            setState(() {
+              cardList.add(result);
+            });
+            Navigator.of(context).pop();
+          }
         },
       ),
       new ListTile(

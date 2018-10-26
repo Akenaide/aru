@@ -57,14 +57,13 @@ class Ressource {
   dynamic fetchCardInfo(String cardId) async {
     Map<String, dynamic> data;
     http.Client client = new http.Client();
-      http.Response response =
-          await client.get(ProxySingleUrl + "?id=$cardId");
-      if (response.statusCode != 200) {
-        print(response.body);
-        throw http.ClientException;
-      }
-       data = json.decode(response.body);
-      return data;
+    http.Response response = await client.get(ProxySingleUrl + "?id=$cardId");
+    if (response.statusCode != 200) {
+      print(response.body);
+      throw http.ClientException;
+    }
+    data = json.decode(response.body);
+    return data;
   }
 
   Future updatePrice(List<ShopCard> cards) async {

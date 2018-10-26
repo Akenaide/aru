@@ -4,6 +4,8 @@ import 'package:aru/card.dart';
 import 'package:aru/new_shop_widget.dart';
 import 'package:aru/ressources.dart';
 
+const String DEFAULT_IMG = "https://proxymaker.naide.moe/static/kokorocafe.png";
+
 class ManageShopCardWidget extends StatefulWidget {
   final String action;
   final ShopCard shopCard;
@@ -42,29 +44,41 @@ class _ManageElement extends State<ManageShopCardWidget> {
     });
   }
 
-  _performAdd(List<ShopCard> dbCards, [ShopCard updatedShop]) {
+  _performAdd([ShopCard updatedShop]) {
     throw new UnimplementedError();
   }
 
   void _addElement() async {
-    List<ShopCard> dbCards;
     ShopCard updatedShop = shopCard;
-
-    await _ressource.getAll().then((data) {
-      dbCards = data;
-    });
+    int _nbBought =
+        _cardQuantityCtrl.text.isEmpty ? 0 : int.parse(_cardQuantityCtrl.text);
+    int _amount =
+        _neededAmountCtrl.text.isEmpty ? 1 : int.parse(_neededAmountCtrl.text);
 
     updatedShop.stores = new Map<String, int>();
     this.shopList.forEach((Shop shop) {
       updatedShop.stores[shop.name] = shop.price;
     });
 
-    updatedShop.cardId = _cardIdCtrl.text;
-    updatedShop.nbBought = int.parse(_cardQuantityCtrl.text);
-    updatedShop.amount = int.parse(_neededAmountCtrl.text);
-    _performAdd(dbCards, updatedShop);
+    updatedShop
+      ..cardId = _cardIdCtrl.text
+      ..nbBought = _nbBought
+      ..amount = _amount;
 
-    Navigator.of(context).pop();
+    if (updatedShop.imageurl == "") {
+      updatedShop.imageurl = DEFAULT_IMG;
+    }
+    _performAdd(updatedShop);
+
+    Navigator.of(context).pop(updatedShop);
+  }
+
+  void _fetch() async {
+    var data = await _ressource.fetchCardInfo(_cardIdCtrl.text);
+    this.shopCard.imageurl = data["URL"];
+    setState(() {
+      this.shopList.add(new Shop.full("yyt", data["Price"]));
+    });
   }
 
   @override
@@ -83,13 +97,24 @@ class _ManageElement extends State<ManageShopCardWidget> {
       body: new SingleChildScrollView(
         child: new Column(
           children: <Widget>[
-            new TextField(
-              decoration: new InputDecoration(
-                hintText: "Card",
-                contentPadding: new EdgeInsets.all(10.0),
-                icon: const Icon(Icons.payment),
-              ),
-              controller: _cardIdCtrl,
+            new Row(
+              children: <Widget>[
+                new Expanded(
+                  child: new TextField(
+                    autofocus: true,
+                    decoration: new InputDecoration(
+                      hintText: "Card",
+                      contentPadding: new EdgeInsets.all(10.0),
+                      icon: const Icon(Icons.payment),
+                    ),
+                    controller: _cardIdCtrl,
+                  ),
+                ),
+                new RaisedButton(
+                  child: const Text("Fetch"),
+                  onPressed: _fetch,
+                )
+              ],
             ),
             new Row(
               children: <Widget>[
@@ -145,7 +170,7 @@ class _ManageElement extends State<ManageShopCardWidget> {
 
 class _EditElement extends _ManageElement {
   @override
-  _performAdd(dbCards, [ShopCard updatedShop]) {
+  _performAdd([ShopCard updatedShop]) {
     _ressource.update(updatedShop);
   }
 
@@ -165,8 +190,8 @@ class _EditElement extends _ManageElement {
 
 class _AddElement extends _ManageElement {
   @override
-  _performAdd(dbCards, [ShopCard updatedShop]) {
-    dbCards.add(updatedShop);
+  _performAdd([ShopCard updatedShop]) {
+    _ressource.add([updatedShop]);
   }
 
   @override

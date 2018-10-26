@@ -72,10 +72,9 @@ class _ImportState extends State<ImportWidget> {
         icon: new Icon(Icons.select_all),
         onPressed: _selectAll,
       ));
-    cardWidgets = this.cards.map((CardWS card) {
-      return new CardWSWidget(card);
-    }).toList();
-
+      cardWidgets = this.cards.map((CardWS card) {
+        return new CardWSWidget(card);
+      }).toList();
     }
 
     return new Scaffold(
