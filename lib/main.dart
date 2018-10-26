@@ -9,6 +9,7 @@ import 'package:aru/card.dart';
 import 'package:aru/manage_card.dart';
 import 'package:aru/import_widget.dart';
 import 'package:aru/ressources.dart';
+import 'package:aru/streams.dart';
 
 const AruLoginKey = "AruLogin";
 Firestore fsi = Firestore.instance;
@@ -71,13 +72,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _init;
   Ressource _ressource = Ressource();
   TextEditingController _username = new TextEditingController();
-  int get _total {
-    int sum = 0;
-    for (var card in cardList) {
-      sum = sum + (card.stores["yyt"] * (card.amount - card.nbBought));
-    }
-    return sum;
-  }
 
   void _deleteCard(String selected) async {
     _ressource.delete(selected);
@@ -252,7 +246,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 }
                 return new Column(
                   children: <Widget>[
-                    new Card(child: new Text("Total : $_total")),
+                    new TotalPrice(cardList),
                     new Expanded(
                       child: GridView.custom(
                         childrenDelegate:
@@ -277,6 +271,31 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         onRefresh: _getInitial,
       ),
+    );
+  }
+}
+
+class TotalPrice extends StatefulWidget {
+  final List<ShopCard> _cardList;
+  @override
+  _TotalPriceState createState() => _TotalPriceState();
+
+  TotalPrice(this._cardList);
+
+  int get _total {
+    int sum = 0;
+    for (var card in _cardList) {
+      sum = sum + (card.stores["yyt"] * (card.amount - card.nbBought));
+    }
+    return sum;
+  }
+}
+
+class _TotalPriceState extends State<TotalPrice> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: new Card(child: new Text("Total : ${widget._total}")),
     );
   }
 }
