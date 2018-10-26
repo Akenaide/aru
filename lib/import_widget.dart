@@ -59,6 +59,7 @@ class _ImportState extends State<ImportWidget> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> cardWidgets = [const Text("No data")];
     List<Widget> actions = <Widget>[
       new IconButton(
         icon: new Icon(Icons.save),
@@ -71,6 +72,10 @@ class _ImportState extends State<ImportWidget> {
         icon: new Icon(Icons.select_all),
         onPressed: _selectAll,
       ));
+    cardWidgets = this.cards.map((CardWS card) {
+      return new CardWSWidget(card);
+    }).toList();
+
     }
 
     return new Scaffold(
@@ -78,8 +83,7 @@ class _ImportState extends State<ImportWidget> {
         title: const Text("Import from wsdeck"),
         actions: actions,
       ),
-      body: new ListView(
-        padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+      body: new Column(
         children: <Widget>[
           const Text(
             "Enter wsdeck id :",
@@ -99,19 +103,16 @@ class _ImportState extends State<ImportWidget> {
                 ),
               ),
               new RaisedButton(
-                // color: Colors.blueGrey,
                 child: const Text("Fetch"),
                 onPressed: _fetch,
               )
             ],
           ),
-          new Column(
-            children: this.cards.isEmpty
-                ? [const Text("No data")]
-                : this.cards.map((CardWS card) {
-                    return new CardWSWidget(card);
-                  }).toList(),
-          )
+          new Expanded(
+              child: new GridView.count(
+            crossAxisCount: 4,
+            children: cardWidgets,
+          )),
         ],
       ),
     );
@@ -140,22 +141,33 @@ class _CardWSState extends State<CardWSWidget> {
       child: new Card(
         color: this.widget.card.selected ? Colors.amber : Colors.white,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            new Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
+            new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 const Text(
-                  "Card ID",
+                  "Card ID: ",
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 new Text(this.widget.card.id),
               ],
             ),
             new Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 const Text(
-                  "Amount",
+                  "Price: ",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                new Text(this.widget.card.price.toString()),
+              ],
+            ),
+            new Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                const Text(
+                  "Amount: ",
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 new Text(this.widget.card.amount.toString()),
