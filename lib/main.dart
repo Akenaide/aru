@@ -10,6 +10,7 @@ import 'package:aru/import_widget.dart';
 import 'package:aru/ressources.dart';
 import 'package:aru/totalprice_widget.dart';
 import 'package:aru/globals.dart' show fsi;
+import 'package:aru/list_widget.dart';
 
 const AruLoginKey = "AruLogin";
 
@@ -71,15 +72,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _init;
   Ressource _ressource = Ressource();
   TextEditingController _username = new TextEditingController();
-
-  void _deleteCard(String selected) async {
-    _ressource.delete(selected);
-    setState(() {
-      cardList.removeWhere((ShopCard card) {
-        return card.id == selected;
-      });
-    });
-  }
 
   Future _getSetLogin() async {
     Completer _completer = new Completer();
@@ -246,22 +238,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 return new Column(
                   children: <Widget>[
                     new TotalPrice(cardList),
-                    new Expanded(
-                      child: GridView.custom(
-                        childrenDelegate:
-                            new SliverChildListDelegate(cardList.isEmpty
-                                ? [new Text("No data")]
-                                : cardList.map((ShopCard card) {
-                                    return new CardWidget(card, _deleteCard,
-                                        cardList.indexOf(card));
-                                  }).toList()),
-                        gridDelegate:
-                            new SliverGridDelegateWithFixedCrossAxisCount(
-                          childAspectRatio: 0.45,
-                          crossAxisCount: 3,
-                        ),
-                      ),
-                    ),
+                    new ListCardWidget(cardList),
                   ],
                 );
             }
