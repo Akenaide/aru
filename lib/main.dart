@@ -238,7 +238,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 return new Column(
                   children: <Widget>[
                     new TotalPrice(cardList),
-                    new ListCardWidget(cardList),
+                    new Expanded(
+                      child: new ListCardWidget(cardList),
+                    ),
                   ],
                 );
             }

@@ -27,25 +27,45 @@ class _ListCardWidgetState extends State<ListCardWidget> {
 
   @override
   void initState() {
-      cardList =  widget._cardList;
-      super.initState();
-    }
+    cardList = widget._cardList;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return new Expanded(
-      child: GridView.custom(
-        childrenDelegate: new SliverChildListDelegate(cardList.isEmpty
-            ? [new Text("No data")]
-            : cardList.map((ShopCard card) {
-                return new CardWidget(
-                    card, _deleteCard, cardList.indexOf(card));
-              }).toList()),
-        gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-          childAspectRatio: 0.45,
-          crossAxisCount: 3,
-        ),
-      ),
+    List<ShopCard> finished = cardList.where((ShopCard card) {
+      return card.nbBought >= card.amount;
+    }).toList();
+
+    List<ShopCard> needed = cardList.where((ShopCard card) {
+      return card.nbBought < card.amount;
+    }).toList();
+
+    SliverGrid gridNeeded = SliverGrid.count(
+      children: (needed.isEmpty
+          ? [new Text("No data")]
+          : needed.map((ShopCard card) {
+              return new CardWidget(card, _deleteCard, cardList.indexOf(card));
+            }).toList()),
+      childAspectRatio: 0.45,
+      crossAxisCount: 3,
+    );
+
+    SliverGrid gridFinished = SliverGrid.count(
+      children: (finished.isEmpty
+          ? [new Text("No data")]
+          : finished.map((ShopCard card) {
+              return new CardWidget(card, _deleteCard, cardList.indexOf(card));
+            }).toList()),
+      childAspectRatio: 0.45,
+      crossAxisCount: 3,
+    );
+
+    return new CustomScrollView(
+      slivers: <Widget>[
+        gridNeeded,
+        gridFinished,
+      ],
     );
   }
 }
