@@ -45,7 +45,7 @@ class _ListCardWidgetState extends State<ListCardWidget> {
       children: (needed.isEmpty
           ? [new Text("No data")]
           : needed.map((ShopCard card) {
-              return new CardWidget(card, _deleteCard, cardList.indexOf(card));
+              return new CardWidget(card, _deleteCard);
             }).toList()),
       childAspectRatio: 0.45,
       crossAxisCount: 3,
@@ -55,7 +55,7 @@ class _ListCardWidgetState extends State<ListCardWidget> {
       children: (finished.isEmpty
           ? [new Text("No data")]
           : finished.map((ShopCard card) {
-              return new CardWidget(card, _deleteCard, cardList.indexOf(card));
+              return new CardWidget.grey(card, _deleteCard);
             }).toList()),
       childAspectRatio: 0.45,
       crossAxisCount: 3,

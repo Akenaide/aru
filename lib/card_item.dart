@@ -42,9 +42,10 @@ class _ShopRowState extends State<ShopRow> {
 class CardWidget extends StatefulWidget {
   final ShopCard _shopCard;
   final Function(String) _delete;
-  final int index;
+  final Color color;
 
-  CardWidget(this._shopCard, this._delete, this.index);
+  CardWidget(this._shopCard, this._delete, {this.color=Colors.white});
+  CardWidget.grey(this._shopCard, this._delete, {this.color=Colors.grey});
 
   @override
   _CardItemState createState() => new _CardItemState();
@@ -73,6 +74,7 @@ class _CardItemState extends State<CardWidget> {
   @override
   Widget build(BuildContext context) {
     return new Card(
+      color: widget.color,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[

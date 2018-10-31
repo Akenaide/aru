@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:aru/card_item.dart';
 import 'package:aru/card.dart';
 import 'package:aru/manage_card.dart';
 import 'package:aru/import_widget.dart';
