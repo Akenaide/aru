@@ -13,13 +13,12 @@ class ListCardWidget extends StatefulWidget {
 }
 
 class _ListCardWidgetState extends State<ListCardWidget> {
-  List<ShopCard> cardList;
   Ressource _ressource = new Ressource();
 
   void _deleteCard(String selected) async {
     _ressource.delete(selected);
     setState(() {
-      cardList.removeWhere((ShopCard card) {
+      widget._cardList.removeWhere((ShopCard card) {
         return card.id == selected;
       });
     });
@@ -27,17 +26,16 @@ class _ListCardWidgetState extends State<ListCardWidget> {
 
   @override
   void initState() {
-    cardList = widget._cardList;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    List<ShopCard> finished = cardList.where((ShopCard card) {
+    List<ShopCard> finished = widget._cardList.where((ShopCard card) {
       return card.nbBought >= card.amount;
     }).toList();
 
-    List<ShopCard> needed = cardList.where((ShopCard card) {
+    List<ShopCard> needed = widget._cardList.where((ShopCard card) {
       return card.nbBought < card.amount;
     }).toList();
 
