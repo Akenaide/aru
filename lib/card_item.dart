@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:aru/card.dart';
 import 'package:aru/manage_card.dart';
 import 'package:aru/ressources.dart';
+import 'package:aru/globals.dart';
 
 class ShopRow extends StatefulWidget {
   final ShopCard _shopCard;
@@ -22,7 +23,7 @@ class _ShopRowState extends State<ShopRow> {
     List<Widget> shops = [];
     widget._shopCard.stores.forEach((String name, int price) {
       shops.add(new Text(
-        "$name : $price",
+        "$name : ${intlNumber.format(price)}",
         overflow: TextOverflow.clip,
         style: const TextStyle(
           fontSize: 13.0,
@@ -62,6 +63,7 @@ class _CardItemState extends State<CardWidget> {
 
   void _add() {
     Ressource ressource = Ressource();
+    quantityStream.add(widget._shopCard.cardId);
     setState(() {
       widget._shopCard.nbBought++;
     });

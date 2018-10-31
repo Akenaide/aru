@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:aru/card.dart';
-import 'package:aru/main.dart' show fsi;
+import 'package:aru/globals.dart' show fsi;
 
 const bool ENABLE_FS = true;
 const String ProxySingleUrl = "https://proxymaker.naide.moe/views/searchcards";

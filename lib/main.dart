@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:aru/card_item.dart';
@@ -9,10 +8,10 @@ import 'package:aru/card.dart';
 import 'package:aru/manage_card.dart';
 import 'package:aru/import_widget.dart';
 import 'package:aru/ressources.dart';
-import 'package:aru/streams.dart';
+import 'package:aru/totalprice_widget.dart';
+import 'package:aru/globals.dart' show fsi;
 
 const AruLoginKey = "AruLogin";
-Firestore fsi = Firestore.instance;
 
 void main() {
   fsi.enablePersistence(true);
@@ -271,31 +270,6 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         onRefresh: _getInitial,
       ),
-    );
-  }
-}
-
-class TotalPrice extends StatefulWidget {
-  final List<ShopCard> _cardList;
-  @override
-  _TotalPriceState createState() => _TotalPriceState();
-
-  TotalPrice(this._cardList);
-
-  int get _total {
-    int sum = 0;
-    for (var card in _cardList) {
-      sum = sum + (card.stores["yyt"] * (card.amount - card.nbBought));
-    }
-    return sum;
-  }
-}
-
-class _TotalPriceState extends State<TotalPrice> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: new Card(child: new Text("Total : ${widget._total}")),
     );
   }
 }
