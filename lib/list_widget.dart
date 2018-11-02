@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:aru/card.dart';
 import 'package:aru/card_item.dart';
 import 'package:aru/ressources.dart';
+import 'package:aru/globals.dart';
 
 class ListCardWidget extends StatefulWidget {
   final List<ShopCard> _cardList;
@@ -26,6 +27,9 @@ class _ListCardWidgetState extends State<ListCardWidget> {
 
   @override
   void initState() {
+    quantityStream.stream.listen((onData) {
+      setState(() {});
+    });
     super.initState();
   }
 
