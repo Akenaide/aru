@@ -44,8 +44,8 @@ class CardWidget extends StatefulWidget {
   final Function(String) _delete;
   final Color color;
 
-  CardWidget(this._shopCard, this._delete, {this.color=Colors.white});
-  CardWidget.grey(this._shopCard, this._delete, {this.color=Colors.grey});
+  CardWidget(this._shopCard, this._delete, {this.color = Colors.white});
+  CardWidget.grey(this._shopCard, this._delete, {this.color = Colors.grey});
 
   @override
   _CardItemState createState() => new _CardItemState();

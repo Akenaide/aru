@@ -77,11 +77,13 @@ class ShopCard {
 class Shop {
   String name;
   int price;
+  bool autofocus;
 
-  Shop.full(this.name, this.price);
+  Shop.full(this.name, this.price, {this.autofocus = false});
   Shop.empty() {
     name = "";
     price = 0;
+    autofocus = true;
   }
 }
 

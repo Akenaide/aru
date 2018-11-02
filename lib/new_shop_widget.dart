@@ -71,10 +71,11 @@ class _NewShop extends State<NewShopWidget> {
                 icon: const Icon(Icons.delete),
                 tooltip: 'Delete shop',
                 onPressed: () => widget._delete(widget.shop.name),
-              )
+              ),
             ],
           ),
           new TextField(
+            autofocus: this.widget.shop.autofocus,
             controller: _nameCtrl,
             decoration: new InputDecoration(
               hintText: "Shop",
