@@ -101,7 +101,7 @@ class _ManageElement extends State<ManageShopCardWidget> {
               children: <Widget>[
                 new Expanded(
                   child: new TextField(
-                    autofocus: true,
+                    autofocus: this.title == "Add",
                     decoration: new InputDecoration(
                       hintText: "Card",
                       contentPadding: new EdgeInsets.all(10.0),
@@ -146,9 +146,6 @@ class _ManageElement extends State<ManageShopCardWidget> {
               children: this.shopList.map((Shop shop) {
                 return new NewShopWidget(shop, this._delete);
               }).toList(),
-            ),
-            new Row(
-              children: <Widget>[],
             ),
           ],
         ),
