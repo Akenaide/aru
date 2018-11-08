@@ -7,10 +7,10 @@ import 'package:aru/globals.dart';
 
 class ListCardWidget extends StatefulWidget {
   final List<ShopCard> _cardList;
-  @override
+  final Color color;
   _ListCardWidgetState createState() => _ListCardWidgetState();
 
-  ListCardWidget(this._cardList);
+  ListCardWidget(this._cardList, {this.color: Colors.white});
 }
 
 class _ListCardWidgetState extends State<ListCardWidget> {
@@ -35,39 +35,16 @@ class _ListCardWidgetState extends State<ListCardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    List<ShopCard> finished = widget._cardList.where((ShopCard card) {
-      return card.nbBought >= card.amount;
-    }).toList();
-
-    List<ShopCard> needed = widget._cardList.where((ShopCard card) {
-      return card.nbBought < card.amount;
-    }).toList();
-
-    SliverGrid gridNeeded = SliverGrid.count(
-      children: (needed.isEmpty
+    SliverGrid grid = SliverGrid.count(
+      children: (widget._cardList.isEmpty
           ? [new Text("No data")]
-          : needed.map((ShopCard card) {
-              return new CardWidget(card, _deleteCard);
+          : widget._cardList.map((ShopCard card) {
+              return new CardWidget(card, _deleteCard, color: widget.color,);
             }).toList()),
       childAspectRatio: 0.45,
       crossAxisCount: 3,
     );
 
-    SliverGrid gridFinished = SliverGrid.count(
-      children: (finished.isEmpty
-          ? [new Text("No data")]
-          : finished.map((ShopCard card) {
-              return new CardWidget.grey(card, _deleteCard);
-            }).toList()),
-      childAspectRatio: 0.45,
-      crossAxisCount: 3,
-    );
-
-    return new CustomScrollView(
-      slivers: <Widget>[
-        gridNeeded,
-        gridFinished,
-      ],
-    );
+    return grid;
   }
 }

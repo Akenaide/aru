@@ -66,6 +66,22 @@ class ShopCard {
     return allShops;
   }
 
+  static Map<String, List<ShopCard>> splitFinishedNotFinished(
+      List<ShopCard> allCards) {
+    List<ShopCard> finished = allCards.where((ShopCard card) {
+      return card.nbBought >= card.amount;
+    }).toList();
+
+    List<ShopCard> needed = allCards.where((ShopCard card) {
+      return card.nbBought < card.amount;
+    }).toList();
+
+    return {
+      "finished": finished,
+      "needed": needed,
+    };
+  }
+
   String cardId;
   Map<String, int> stores;
   int nbBought;

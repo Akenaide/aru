@@ -68,6 +68,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<ShopCard> cardList = [];
+  List<ShopCard> finished;
+  List<ShopCard> needed;
   Future<void> _init;
   Ressource _ressource = Ressource();
   TextEditingController _username = new TextEditingController();
@@ -231,6 +233,9 @@ class _MyHomePageState extends State<MyHomePage> {
               case ConnectionState.waiting:
                 return new CircularProgressIndicator();
               case ConnectionState.done:
+                var cards = ShopCard.splitFinishedNotFinished(cardList);
+                finished = cards["finished"];
+                needed = cards["needed"];
                 if (snapshot.hasError) {
                   return new Text('Error ${snapshot.error}');
                 }
@@ -238,7 +243,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: <Widget>[
                     new TotalPrice(cardList),
                     new Expanded(
-                      child: new ListCardWidget(cardList),
+                      child: new CustomScrollView(slivers: <Widget>[
+                        ListCardWidget(needed),
+                        ListCardWidget(finished, color: Colors.grey,),
+                      ],),
                     ),
                   ],
                 );
