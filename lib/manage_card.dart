@@ -83,6 +83,28 @@ class _ManageElement extends State<ManageShopCardWidget> {
 
   @override
   Widget build(BuildContext context) {
+    Row quantityRow = new Row(
+      children: <Widget>[
+        new Expanded(
+          child: new TextField(
+            decoration: new InputDecoration(
+              contentPadding: new EdgeInsets.all(10.0),
+              icon: const Icon(Icons.add_shopping_cart),
+            ),
+            controller: _cardQuantityCtrl,
+            keyboardType: TextInputType.number,
+          ),
+        ),
+        new Text(" / "),
+        new Expanded(
+          child: new TextField(
+            controller: _neededAmountCtrl,
+            keyboardType: TextInputType.number,
+          ),
+        ),
+      ],
+    );
+
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("${this.title} element"),
@@ -116,32 +138,7 @@ class _ManageElement extends State<ManageShopCardWidget> {
                 )
               ],
             ),
-            new Row(
-              children: <Widget>[
-                new Container(
-                  width: 90.0,
-                  child: new TextField(
-                    decoration: new InputDecoration(
-                      hintText: "Quantity",
-                      contentPadding: new EdgeInsets.all(10.0),
-                      icon: const Icon(Icons.add_shopping_cart),
-                    ),
-                    textAlign: TextAlign.end,
-                    controller: _cardQuantityCtrl,
-                    keyboardType: TextInputType.number,
-                  ),
-                ),
-                new Text(" / "),
-                new Container(
-                  width: 50.0,
-                  child: new TextField(
-                    textAlign: TextAlign.end,
-                    controller: _neededAmountCtrl,
-                    keyboardType: TextInputType.number,
-                  ),
-                ),
-              ],
-            ),
+            quantityRow,
             new Column(
               children: this.shopList.map((Shop shop) {
                 return new NewShopWidget(shop, this._delete);
