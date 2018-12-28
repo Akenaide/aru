@@ -76,6 +76,10 @@ class _ManageElement extends State<ManageShopCardWidget> {
   void _fetch() async {
     var data = await _ressource.fetchCardInfo(_cardIdCtrl.text);
     this.shopCard.imageurl = data["URL"];
+    if (this.shopList[0].name == "") {
+      this.shopList.removeAt(0);
+    }
+
     setState(() {
       this.shopList.add(new Shop.full("yyt", data["Price"]));
     });
