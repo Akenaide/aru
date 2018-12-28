@@ -57,7 +57,8 @@ class Ressource {
   dynamic fetchCardInfo(String cardId) async {
     Map<String, dynamic> data;
     http.Client client = new http.Client();
-    http.Response response = await client.get(ProxySingleUrl + "?id=$cardId");
+    http.Response response =
+        await client.get(ProxySingleUrl + "?id=${cardId.toUpperCase().trim()}");
     if (response.statusCode != 200) {
       print(response.body);
       throw http.ClientException;

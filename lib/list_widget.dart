@@ -39,7 +39,11 @@ class _ListCardWidgetState extends State<ListCardWidget> {
       children: (widget._cardList.isEmpty
           ? [new Text("No data")]
           : widget._cardList.map((ShopCard card) {
-              return new CardWidget(card, _deleteCard, color: widget.color,);
+              return new CardWidget(
+                card,
+                _deleteCard,
+                color: widget.color,
+              );
             }).toList()),
       childAspectRatio: 0.45,
       crossAxisCount: 3,

@@ -243,10 +243,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: <Widget>[
                     new TotalPrice(cardList),
                     new Expanded(
-                      child: new CustomScrollView(slivers: <Widget>[
-                        ListCardWidget(needed),
-                        ListCardWidget(finished, color: Colors.grey,),
-                      ],),
+                      child: new CustomScrollView(
+                        slivers: <Widget>[
+                          ListCardWidget(needed),
+                          ListCardWidget(
+                            finished,
+                            color: Colors.grey,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 );
