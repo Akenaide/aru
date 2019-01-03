@@ -60,8 +60,7 @@ class Ressource {
     http.Response response =
         await client.get(ProxySingleUrl + "?id=${cardId.toUpperCase().trim()}");
     if (response.statusCode != 200) {
-      print(response.body);
-      throw http.ClientException;
+      throw new http.ClientException(response.body);
     }
     data = json.decode(response.body);
     return data;
@@ -74,7 +73,7 @@ class Ressource {
       var data;
       try {
         data = await fetchCardInfo(card.cardId);
-      } catch (ClienException) {
+      } on http.ClientException catch (_) {
         continue;
       }
       card.stores["yyt"] = data["Price"];

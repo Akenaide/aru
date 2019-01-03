@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:aru/card.dart';
 import 'package:aru/new_shop_widget.dart';
@@ -32,6 +33,8 @@ class _ManageElement extends State<ManageShopCardWidget> {
   final TextEditingController _cardIdCtrl = new TextEditingController();
   final TextEditingController _cardQuantityCtrl = new TextEditingController();
   final TextEditingController _neededAmountCtrl = new TextEditingController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   Ressource _ressource = Ressource();
   List<Shop> shopList = [];
   ShopCard shopCard;
@@ -74,7 +77,28 @@ class _ManageElement extends State<ManageShopCardWidget> {
   }
 
   void _fetch() async {
-    var data = await _ressource.fetchCardInfo(_cardIdCtrl.text);
+    var data;
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Row(
+        children: <Widget>[
+          CircularProgressIndicator(),
+          const Text("Loading...")
+        ],
+      ),
+    ));
+    try {
+      data = await _ressource.fetchCardInfo(_cardIdCtrl.text);
+    } on http.ClientException catch (e) {
+      _scaffoldKey.currentState.showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+          duration: new Duration(seconds: 2),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+    _scaffoldKey.currentState.hideCurrentSnackBar();
     this.shopCard.imageurl = data["URL"];
     if (this.shopList[0].name == "") {
       this.shopList.removeAt(0);
@@ -110,6 +134,7 @@ class _ManageElement extends State<ManageShopCardWidget> {
     );
 
     return new Scaffold(
+      key: _scaffoldKey,
       appBar: new AppBar(
         title: new Text("${this.title} element"),
         actions: <Widget>[
