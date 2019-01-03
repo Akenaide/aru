@@ -14,7 +14,7 @@ import 'package:aru/list_widget.dart';
 const AruLoginKey = "AruLogin";
 
 void main() {
-  fsi.enablePersistence(true);
+  fsi.settings(persistenceEnabled: true);
   runApp(new MyApp());
 }
 
