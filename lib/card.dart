@@ -50,6 +50,10 @@ class ShopCard {
     return json.encode(this.toJson()).toString();
   }
 
+  bool isFinished() {
+    return nbBought >= amount;
+  }
+
   static List<Map<String, dynamic>> toFirestore(List<ShopCard> cards) {
     return cards.map((f) {
       return f.toJson();
@@ -68,13 +72,16 @@ class ShopCard {
 
   static Map<String, List<ShopCard>> splitFinishedNotFinished(
       List<ShopCard> allCards) {
-    List<ShopCard> finished = allCards.where((ShopCard card) {
-      return card.nbBought >= card.amount;
-    }).toList();
+    List<ShopCard> finished = [];
+    List<ShopCard> needed = [];
 
-    List<ShopCard> needed = allCards.where((ShopCard card) {
-      return card.nbBought < card.amount;
-    }).toList();
+    for (var card in allCards) {
+      if (card.isFinished()) {
+        finished.add(card);
+      } else {
+        needed.add(card);
+      }
+    }
 
     return {
       "finished": finished,

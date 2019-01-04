@@ -71,6 +71,10 @@ class Ressource {
 
     for (ShopCard card in cards) {
       var data;
+
+      if (card.isFinished()) {
+        continue;
+      }
       try {
         data = await fetchCardInfo(card.cardId);
       } on http.ClientException catch (_) {
