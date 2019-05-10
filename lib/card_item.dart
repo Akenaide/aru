@@ -135,7 +135,7 @@ class _CardItemState extends State<CardWidget> {
           ),
           new GestureDetector(
             child: new CachedNetworkImage(
-              placeholder: CircularProgressIndicator(),
+              placeholder: (context, text) => CircularProgressIndicator(),
               imageUrl: widget._shopCard.imageurl,
             ),
             onDoubleTap: _add,
