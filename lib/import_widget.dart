@@ -25,8 +25,13 @@ class _ImportState extends State<ImportWidget> {
   }
 
   void _fetch() async {
-    var data =
-        await fetchDeck("${this.widget.encoreUrl}${this._controller.text}/");
+    var data;
+    if (this._controller.text.startsWith("https://")) {
+      data = await fetchDeck(this._controller.text);
+    } else {
+      data =
+          await fetchDeck("${this.widget.encoreUrl}${this._controller.text}/");
+    }
     var _cards = CardWS.listFromString(data.body);
     _cards.sort((CardWS a, CardWS b) {
       return a.id.compareTo(b.id);
