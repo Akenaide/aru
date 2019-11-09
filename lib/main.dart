@@ -84,9 +84,11 @@ class _MyHomePageState extends State<MyHomePage> {
     var pref = await SharedPreferences.getInstance();
     if (_username.text.isEmpty) {
       String username = pref.get(AruLoginKey);
-      if (username.isNotEmpty) {
-        _ressource.username = username;
-        _username.text = username;
+      if (username != null) {
+        if (username.isNotEmpty) {
+          _ressource.username = username;
+          _username.text = username;
+        }
       }
     } else {
       pref.setString(AruLoginKey, _username.text);
