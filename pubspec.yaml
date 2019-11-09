@@ -19,7 +19,7 @@ environment:
 
 dependencies:
   intl:
-  cached_network_image:
+  cached_network_image: 2.0.0-rc.1
   cloud_firestore:
 
   flutter:
