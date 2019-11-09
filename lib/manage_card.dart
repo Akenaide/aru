@@ -103,6 +103,9 @@ class _ManageElement extends State<ManageShopCardWidget> {
     if (this.shopList[0].name == "") {
       this.shopList.removeAt(0);
     }
+    // updatedShop.cardId = _cardIdCtrl.text;
+    // updatedShop.nbBought = int.parse(_cardQuantityCtrl.text);
+    // prevCards.addAll(_performAdd(dbCards, updatedShop));
 
     setState(() {
       this.shopList.add(new Shop.full("yyt", data["Price"]));

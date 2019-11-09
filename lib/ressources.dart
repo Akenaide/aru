@@ -5,14 +5,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:aru/card.dart';
-import 'package:aru/globals.dart' show fsi;
-
 const bool ENABLE_FS = true;
 const String ProxySingleUrl = "https://proxymaker.naide.moe/views/searchcards";
 
 class Ressource {
   String fsPath = '';
   bool _isLogged = false;
+  Firestore fsi;
   static final Ressource _ressource = new Ressource._internal();
 
   Ressource._internal();

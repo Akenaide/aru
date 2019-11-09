@@ -1,21 +1,26 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import 'package:aru/card.dart';
 import 'package:aru/manage_card.dart';
 import 'package:aru/import_widget.dart';
 import 'package:aru/ressources.dart';
 import 'package:aru/totalprice_widget.dart';
-import 'package:aru/globals.dart' show fsi;
 import 'package:aru/list_widget.dart';
 
 const AruLoginKey = "AruLogin";
 
 void main() {
+  final app = new MyApp();
+  runApp(app);
+
+  final Firestore fsi = Firestore(app: new FirebaseApp(name: "[DEFAULT]"));
   fsi.settings(persistenceEnabled: true);
-  runApp(new MyApp());
+  Ressource().fsi = fsi;
 }
 
 class MyApp extends StatelessWidget {
@@ -150,6 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: Try to have a lighter build function.
     List<Widget> drawerChildren = [
       new Container(
         height: 80.0,

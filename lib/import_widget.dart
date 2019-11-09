@@ -7,7 +7,8 @@ import 'package:aru/card.dart';
 import 'package:aru/ressources.dart';
 
 class ImportWidget extends StatefulWidget {
-  final String wsdeckUrl = "https://wsdecks.com/deck/";
+  // final String wsdeckUrl = "https://wsdecks.com/deck/";
+  final String encoreUrl = "https://www.encoredecks.com/deck/";
   final String pmUrl = "https://proxymaker.naide.moe/views/estimateprice";
 
   @override
@@ -19,13 +20,13 @@ class ImportWidget extends StatefulWidget {
 class _ImportState extends State<ImportWidget> {
   final TextEditingController _controller = new TextEditingController();
   final List<CardWS> cards = [];
-  Future<http.Response> fetchDeck(String wsdeck) {
-    return http.post(this.widget.pmUrl, body: {"url": wsdeck});
+  Future<http.Response> fetchDeck(String deck) {
+    return http.post(this.widget.pmUrl, body: {"url": deck});
   }
 
   void _fetch() async {
     var data =
-        await fetchDeck("${this.widget.wsdeckUrl}${this._controller.text}/");
+        await fetchDeck("${this.widget.encoreUrl}${this._controller.text}/");
     var _cards = CardWS.listFromString(data.body);
     _cards.sort((CardWS a, CardWS b) {
       return a.id.compareTo(b.id);
@@ -79,8 +80,13 @@ class _ImportState extends State<ImportWidget> {
 
     return new Scaffold(
       appBar: AppBar(
-        title: const Text("Import from wsdeck"),
-        actions: actions,
+        title: const Text("Import from encore"),
+        actions: <Widget>[
+          new IconButton(
+            icon: new Icon(Icons.save),
+            onPressed: _import,
+          )
+        ],
       ),
       body: new Column(
         children: <Widget>[
