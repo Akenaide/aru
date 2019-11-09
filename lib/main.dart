@@ -167,7 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       new ListTile(
         leading: new Icon(Icons.file_download),
-        title: const Text("Import from wsdeck"),
+        title: const Text("Import from encore"),
         onTap: () {
           Navigator.of(context).pushNamed("/import");
         },

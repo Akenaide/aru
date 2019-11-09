@@ -120,7 +120,7 @@ class CardWS {
   static List<CardWS> listFromString(String elements) {
     List<CardWS> result = [];
     var jElements = json.decode(elements);
-    for (Map<String, dynamic> sCard in jElements) {
+    for (Map<String, dynamic> sCard in jElements[0]) {
       // Little hack to hide the Total
       if (sCard["ID"] != "TOTAL") {
         result.add(CardWS.fromJson(sCard));

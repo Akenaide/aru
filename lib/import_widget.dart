@@ -91,7 +91,7 @@ class _ImportState extends State<ImportWidget> {
       body: new Column(
         children: <Widget>[
           const Text(
-            "Enter wsdeck id :",
+            "Enter encore id :",
             style: TextStyle(fontSize: 20.0),
           ),
           new Row(
